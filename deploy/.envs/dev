@@ -1,0 +1,11 @@
+# Core args
+DEPLOY_ENV=dev
+
+# Dev database args
+POSTGRES_PASSWORD=test123123
+POSTGRES_USER=dbadmin
+POSTGRES_DB=timetrack
+POSTGRES_HOST=localhost
+
+# Dev redis args
+SESSION_SECRET=yLG4GI1D76IS7vOW3olZZ6C0qbUV4Jaa
