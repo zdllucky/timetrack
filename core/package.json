@@ -1,0 +1,22 @@
+{
+  "name": "@timetrack/core",
+  "version": "0.1.0",
+  "description": "Timetrack core monolith",
+  "main": "keystone.ts",
+  "homepage": "localhost:3000",
+  "author": "zdllucky",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@keystone-6/auth": "^1.0.2",
+    "@keystone-6/core": "^1.0.1",
+    "@keystone-6/fields-document": "^1.0.1",
+    "@keystone-6/session-store-redis": "^1.0.0",
+    "redis": "^3.1.2"
+  },
+  "scripts": {
+    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
+    "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
+    "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules
+keystone.db
+keystone.db-journal
+.keystone
+.next
+.data
+yarn-error.log

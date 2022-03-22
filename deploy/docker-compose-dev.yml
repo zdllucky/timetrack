@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    container_name: redis
+    ports:
+      - "6380:6380"
+      - "6379:6379"
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    container_name: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - .data/dev-db:/var/lib/postgresql/data
+    env_file:
+      - .envs/${DEPLOY_ENV}
+
+#  backend:
+#    depends_on:
+#      - db
+#    build:
+#      context: ../core
+#      dockerfile: ../core/docker/${DEPLOY_ENV}Dockerfile
+#    container_name: keystone
+#    volumes:
+#      - ../core:/core
+#    expose:
+#      - 3000
+#    env_file:
+#      - .envs/${DEPLOY_ENV}
+
+
+

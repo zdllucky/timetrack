@@ -1,0 +1,6 @@
+node_modules
+keystone.db
+.idea
+.gitsecret/keys/random_seed
+!*.secret
+deploy/.envs/developmentdeploy/.envs/dev
