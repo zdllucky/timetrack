@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { e } from "../../helpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
-import { access } from "./helpers";
+import { access, filterOr } from "./helpers";
 
 export enum AccessTypes {
   SYSTEM = "System",
@@ -39,21 +39,28 @@ const Access = list({
   },
   access: {
     operation: {
-      query: async (data) => await access(data)`QueryAnyAccess`,
       create: async (data) => await access(data)`CreateAnyAccess`,
     },
     filter: {
+      query: async (data) =>
+        filterOr(
+          await access(data)`QueryAnyAccess`,
+          await access(data, {
+            name: { in: ["User", "Administrator", "Owner"] },
+          })`QueryUserAccess`
+        ),
       update: async (data) =>
-        (await access(data)`UpdateAnyAccess`) && {
+        await access(data, {
           type: { notIn: AccessTypes.SYSTEM },
-        },
+        })`UpdateAnyAccess`,
       delete: async (data) =>
-        (await access(data)`DeleteAnyAccess`) && {
+        await access(data, {
           type: { notIn: AccessTypes.SYSTEM },
-        },
+        })`DeleteAnyAccess`,
     },
     item: {
       create: ({ inputData }) => inputData.type !== AccessTypes.SYSTEM,
+      update: ({ inputData }) => inputData.type !== AccessTypes.SYSTEM,
     },
   },
 });

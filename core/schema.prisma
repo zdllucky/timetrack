@@ -13,10 +13,10 @@ generator client {
 
 model User {
   id       String   @id @default(cuid())
-  name     String   @default("")
-  email    String   @unique @default("")
+  login    String   @unique @default("")
   password String
   access   Access[] @relation("User_access")
+  history  Json?    @default("[]")
 }
 
 model Access {

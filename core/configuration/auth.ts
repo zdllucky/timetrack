@@ -2,13 +2,14 @@ import { createAuth } from "@keystone-6/auth";
 
 const { withAuth } = createAuth({
   listKey: "User",
-  identityField: "email",
+  identityField: "login",
   secretField: "password",
   initFirstItem: {
-    fields: ["email", "password"],
+    fields: ["login", "password"],
     skipKeystoneWelcome: true,
+    itemData: { access: { connect: { name: "Owner" } } },
   },
-  sessionData: "id, email, access {name}",
+  sessionData: "login, access {name}",
 });
 
 export default withAuth;

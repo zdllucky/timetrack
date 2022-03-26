@@ -1,36 +1,32 @@
-import { MaybePromise } from "@keystone-6/core/dist/declarations/src/types/utils";
-import { KeystoneContext } from "@keystone-6/core/types";
+import {
+  BaseListTypeInfo,
+  KeystoneContext,
+  MaybePromise,
+} from "@keystone-6/core/types";
+import { BaseAccessArgs, FilterOutput, SystemAccess } from "./types";
 
-export type SystemAccess = {
-  name: string;
-  label?: string;
-  description?: string;
-  contains?: Array<string>;
-  isContainedIn?: Array<string>;
-  resolver?: (data: Array<unknown>) => MaybePromise<boolean> | undefined;
-};
-
+/**
+ * Adds new system access
+ */
 export const declareAccess = (access: SystemAccess) =>
   <SystemAccess>{
     name: access.name || "",
     label: access.label,
     description: access.description,
     contains: access.contains || [],
-    resolver: access.resolver,
   };
 
-// export const oAccess = () => true;
-// export const fAccess = () => true;
-// export const iAccess = () => true;
-
-export const access = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Record<string, any>
-  // optional?: Record<string, unknown>
+/**
+ * Checks list operation/filter and field access. Additional resolvers are passed to optional field.
+ */
+export const access = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
+  data: A,
+  optional: ((A) => MaybePromise<boolean>) | FilterOutput<T> = async () => true
 ) => {
   const rootCtx = (data.context as KeystoneContext).sudo();
 
-  return async ([a]: TemplateStringsArray) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return async ([a]: TemplateStringsArray): Promise<any> => {
     const allowedAccesses = a.split(",");
 
     let subAccesses = data.session?.data?.access;
@@ -38,8 +34,11 @@ export const access = (
     if (!subAccesses) return false;
 
     while (subAccesses?.length) {
-      if (subAccesses.some(({ name }) => allowedAccesses.includes(name)))
-        return true;
+      if (subAccesses.some(({ name }) => allowedAccesses.includes(name))) {
+        return typeof optional === "function"
+          ? await (optional as (A) => MaybePromise<boolean>)(data)
+          : (optional as FilterOutput<T>);
+      }
 
       subAccesses = await rootCtx.query.Access.findMany({
         where: {
@@ -55,33 +54,16 @@ export const access = (
   };
 };
 
-// type Context = "34";
-//
-// const ctx: Context = "34";
-//
-// type Payload = TemplateStringsArray | ((v: Context) => boolean) | Context;
-//
-// const fn =
-//   (b: Payload, prev: Payload[] = []) =>
-//   (d?: Payload) =>
-//     d !== "34" && d ? fn(d, [...(prev.length ? prev : [b]), d]) : prev;
-//
-// // @ts-ignore
-// console.log(fn`true``true``false``true`(() => true)`true`(ctx));
+/**
+ * Filter access checkers "OR" aggregation method
+ */
+export const filterOr = <T extends BaseListTypeInfo>(
+  ...filter: (boolean | FilterOutput<T>)[]
+) => (filter.includes(true) ? true : { OR: filter.filter((v) => v) });
 
-//
-// type A<T extends "Q" | "W"> = (r: { d: T }) => boolean;
-//
-// type B<T extends "Q" | "W"> = () => T;
-//
-// type Z = {
-//   operation: A<"Q">;
-//   filter?: B<"W">;
-// };
-//
-// const obj: Z = {
-//   operation: ({ d }) => d === "Q",
-// };
-//
-// console.log(obj.operation({ d: "Q" }));
-//
+/**
+ * Filter access checkers "AND" aggregation method
+ */
+export const filterAnd = <T extends BaseListTypeInfo>(
+  ...filter: (boolean | FilterOutput<T>)[]
+) => ({ AND: filter.filter((v) => typeof v === "boolean") });

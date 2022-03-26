@@ -3,8 +3,7 @@
 
 type User {
   id: ID!
-  name: String
-  email: String
+  login: String
   password: PasswordState
   access(
     where: AccessWhereInput! = {}
@@ -13,6 +12,7 @@ type User {
     skip: Int! = 0
   ): [Access!]
   accessCount(where: AccessWhereInput! = {}): Int
+  history: JSON
 }
 
 type PasswordState {
@@ -21,7 +21,7 @@ type PasswordState {
 
 input UserWhereUniqueInput {
   id: ID
-  email: String
+  login: String
 }
 
 input UserWhereInput {
@@ -29,8 +29,7 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
   id: IDFilter
-  name: StringFilter
-  email: StringFilter
+  login: StringFilter
   access: AccessManyRelationFilter
 }
 
@@ -87,8 +86,7 @@ input AccessManyRelationFilter {
 
 input UserOrderByInput {
   id: OrderDirection
-  name: OrderDirection
-  email: OrderDirection
+  login: OrderDirection
 }
 
 enum OrderDirection {
@@ -97,10 +95,10 @@ enum OrderDirection {
 }
 
 input UserUpdateInput {
-  name: String
-  email: String
+  login: String
   password: String
   access: AccessRelateToManyForUpdateInput
+  history: JSON
 }
 
 input AccessRelateToManyForUpdateInput {
@@ -116,10 +114,10 @@ input UserUpdateArgs {
 }
 
 input UserCreateInput {
-  name: String
-  email: String
+  login: String
   password: String
   access: AccessRelateToManyForCreateInput
+  history: JSON
 }
 
 input AccessRelateToManyForCreateInput {
@@ -223,7 +221,7 @@ type Mutation {
   deleteAccesses(where: [AccessWhereUniqueInput!]!): [Access]
   endSession: Boolean!
   authenticateUserWithPassword(
-    email: String!
+    login: String!
     password: String!
   ): UserAuthenticationWithPasswordResult
   createInitialUser(
@@ -245,7 +243,7 @@ type UserAuthenticationWithPasswordFailure {
 }
 
 input CreateInitialUserInput {
-  email: String
+  login: String
   password: String
 }
 
