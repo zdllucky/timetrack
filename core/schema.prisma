@@ -12,18 +12,20 @@ generator client {
 }
 
 model User {
-  id       String @id @default(cuid())
-  name     String @default("")
-  email    String @unique @default("")
+  id       String   @id @default(cuid())
+  name     String   @default("")
+  email    String   @unique @default("")
   password String
+  access   Access[] @relation("User_access")
 }
 
 model Access {
-  id            String         @id @default(cuid())
-  name          String         @unique @default("")
-  isContainedIn Access[]       @relation("Access_contains")
-  contains      Access[]       @relation("Access_contains")
-  type          AccessTypeType @default(Custom)
+  id               String         @id @default(cuid())
+  name             String         @unique @default("")
+  isContainedIn    Access[]       @relation("Access_contains")
+  contains         Access[]       @relation("Access_contains")
+  type             AccessTypeType @default(Custom)
+  from_User_access User[]         @relation("User_access")
 }
 
 enum AccessTypeType {

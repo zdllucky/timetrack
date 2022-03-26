@@ -1,5 +1,5 @@
 import { list } from "@keystone-6/core";
-import { password, text } from "@keystone-6/core/fields";
+import { password, relationship, text } from "@keystone-6/core/fields";
 
 const User = list({
   fields: {
@@ -10,6 +10,10 @@ const User = list({
     }),
     password: password({
       validation: { isRequired: true },
+    }),
+    access: relationship({
+      ref: "Access",
+      many: true,
     }),
   },
 });

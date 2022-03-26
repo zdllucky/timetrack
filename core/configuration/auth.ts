@@ -8,6 +8,7 @@ const { withAuth } = createAuth({
     fields: ["email", "password"],
     skipKeystoneWelcome: true,
   },
+  sessionData: "id, email, access {name}",
 });
 
 export default withAuth;

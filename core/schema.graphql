@@ -6,6 +6,13 @@ type User {
   name: String
   email: String
   password: PasswordState
+  access(
+    where: AccessWhereInput! = {}
+    orderBy: [AccessOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Access!]
+  accessCount(where: AccessWhereInput! = {}): Int
 }
 
 type PasswordState {
@@ -24,6 +31,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  access: AccessManyRelationFilter
 }
 
 input IDFilter {
@@ -71,6 +79,12 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input AccessManyRelationFilter {
+  every: AccessWhereInput
+  some: AccessWhereInput
+  none: AccessWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -86,6 +100,14 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  access: AccessRelateToManyForUpdateInput
+}
+
+input AccessRelateToManyForUpdateInput {
+  disconnect: [AccessWhereUniqueInput!]
+  set: [AccessWhereUniqueInput!]
+  create: [AccessCreateInput!]
+  connect: [AccessWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -97,6 +119,12 @@ input UserCreateInput {
   name: String
   email: String
   password: String
+  access: AccessRelateToManyForCreateInput
+}
+
+input AccessRelateToManyForCreateInput {
+  create: [AccessCreateInput!]
+  connect: [AccessWhereUniqueInput!]
 }
 
 type Access {
@@ -140,12 +168,6 @@ input AccessWhereInput {
   type: AccessTypeTypeNullableFilter
 }
 
-input AccessManyRelationFilter {
-  every: AccessWhereInput
-  some: AccessWhereInput
-  none: AccessWhereInput
-}
-
 input AccessTypeTypeNullableFilter {
   equals: AccessTypeType
   in: [AccessTypeType!]
@@ -166,13 +188,6 @@ input AccessUpdateInput {
   type: AccessTypeType
 }
 
-input AccessRelateToManyForUpdateInput {
-  disconnect: [AccessWhereUniqueInput!]
-  set: [AccessWhereUniqueInput!]
-  create: [AccessCreateInput!]
-  connect: [AccessWhereUniqueInput!]
-}
-
 input AccessUpdateArgs {
   where: AccessWhereUniqueInput!
   data: AccessUpdateInput!
@@ -183,11 +198,6 @@ input AccessCreateInput {
   isContainedIn: AccessRelateToManyForCreateInput
   contains: AccessRelateToManyForCreateInput
   type: AccessTypeType
-}
-
-input AccessRelateToManyForCreateInput {
-  create: [AccessCreateInput!]
-  connect: [AccessWhereUniqueInput!]
 }
 
 """

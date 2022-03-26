@@ -15,7 +15,7 @@
     "redis": "^3.1.2"
   },
   "scripts": {
-    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
+    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev",
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status"
   }

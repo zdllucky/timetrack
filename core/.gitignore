@@ -5,3 +5,5 @@ keystone.db-journal
 .next
 .data
 yarn-error.log
+.graphqlconfig
+devExplore.graphql

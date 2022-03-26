@@ -1,8 +1,9 @@
 import { list } from "@keystone-6/core";
 import { e } from "../../helpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
+import { access } from "./helpers";
 
-enum AccessTypes {
+export enum AccessTypes {
   SYSTEM = "System",
   CUSTOM = "Custom",
 }
@@ -35,6 +36,25 @@ const Access = list({
     isHidden: e`NODE_ENV` === "production",
     hideCreate: e`NODE_ENV` === "production",
     hideDelete: e`NODE_ENV` === "production",
+  },
+  access: {
+    operation: {
+      query: async (data) => await access(data)`QueryAnyAccess`,
+      create: async (data) => await access(data)`CreateAnyAccess`,
+    },
+    filter: {
+      update: async (data) =>
+        (await access(data)`UpdateAnyAccess`) && {
+          type: { notIn: AccessTypes.SYSTEM },
+        },
+      delete: async (data) =>
+        (await access(data)`DeleteAnyAccess`) && {
+          type: { notIn: AccessTypes.SYSTEM },
+        },
+    },
+    item: {
+      create: ({ inputData }) => inputData.type !== AccessTypes.SYSTEM,
+    },
   },
 });
 
