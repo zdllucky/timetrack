@@ -7,16 +7,20 @@ datasource postgresql {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "node_modules/.prisma/client"
+  provider        = "prisma-client-js"
+  output          = "node_modules/.prisma/client"
+  previewFeatures = ["filterJson"]
 }
 
 model User {
-  id       String   @id @default(cuid())
-  login    String   @unique @default("")
+  id       String       @id @default(cuid())
+  login    String       @unique @default("")
   password String
-  access   Access[] @relation("User_access")
-  history  Json?    @default("[]")
+  access   Access[]     @relation("User_access")
+  worksIn  Department[] @relation("Department_workers")
+  manages  Department[] @relation("Department_managers")
+  headOf   Department[] @relation("Department_heads")
+  history  Json?        @default("[]")
 }
 
 model Access {
@@ -26,6 +30,17 @@ model Access {
   contains         Access[]       @relation("Access_contains")
   type             AccessTypeType @default(Custom)
   from_User_access User[]         @relation("User_access")
+}
+
+model Department {
+  id             String       @id @default(cuid())
+  name           String       @default("")
+  heads          User[]       @relation("Department_heads")
+  managers       User[]       @relation("Department_managers")
+  workers        User[]       @relation("Department_workers")
+  isControlledBy Department[] @relation("Department_controls")
+  controls       Department[] @relation("Department_controls")
+  history        Json?        @default("[]")
 }
 
 enum AccessTypeType {

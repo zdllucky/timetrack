@@ -1,7 +1,8 @@
 import { list } from "@keystone-6/core";
 import { password, relationship, text } from "@keystone-6/core/fields";
-import { access, filterOr } from "../access/_misc/helpers";
+import { a, filterOr } from "../access/_misc/helpers";
 import { history, updateHistory } from "../_misc/plugins/history";
+import { UserAccessResolvers } from "./accesses";
 
 const User = list({
   fields: {
@@ -18,46 +19,48 @@ const User = list({
         listView: {
           fieldMode: "hidden",
         },
+        itemView: {
+          fieldMode: async (data) =>
+            (await UserAccessResolvers.updateOwnItem(data)) ? "edit" : "read",
+        },
       },
       access: {
-        update: async (data) =>
-          await access(
-            data,
-            ({ session: { itemId }, item: { id } }) => itemId === id
-          )`UpdateOwnUser`,
+        update: UserAccessResolvers.updateOwnItem,
       },
     }),
     access: relationship({
       ref: "Access",
       many: true,
       access: {
-        update: async (data) => await access(data)`UpdateAnyAccess`,
-        create: async (data) => await access(data)`CreateAnyAccess`,
+        update: async (data) => await a(data)`UpdateAnyAccess`,
+        create: async (data) => await a(data)`CreateAnyAccess`,
       },
     }),
+    worksIn: relationship({ ref: "Department.workers", many: true }),
+    manages: relationship({ ref: "Department.managers", many: true }),
+    headOf: relationship({ ref: "Department.heads", many: true }),
     history: history(),
   },
   access: {
     operation: {
-      query: async (data) => await access(data)`QueryAnyUser`,
-      create: async (data) => await access(data)`CreateAnyUser`,
+      query: async (data) => await a(data)`QueryAnyUser`,
+      create: async (data) => await a(data)`CreateAnyUser`,
     },
     filter: {
       update: async (data) =>
         filterOr(
-          await access(data)`UpdateAnyUser`,
-          await access(data, {
-            id: { equals: data.session.itemId },
-          })`UpdateOwnUser`,
-          await access(data, {
-            access: { none: { name: { in: ["Owner"] } } },
-          })`UpdateAnyNonOwnerUser`
+          await a(data)`UpdateAnyUser`,
+          await UserAccessResolvers.updateOwnFilter(data),
+          await UserAccessResolvers.manageFilter(data)
         ),
       delete: async (data) =>
-        await access(data, {
+        await a(data, {
           access: { none: { name: { in: ["Owner"] } } },
         })`DeleteAnyUser`,
     },
+  },
+  ui: {
+    labelField: "login",
   },
   hooks: {
     afterOperation: updateHistory,

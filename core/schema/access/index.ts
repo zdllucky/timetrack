@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { e } from "../../helpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
-import { access, filterOr } from "./_misc/helpers";
+import { a, filterOr } from "./_misc/helpers";
 
 export enum AccessTypes {
   SYSTEM = "System",
@@ -34,28 +34,29 @@ const Access = list({
     }),
   },
   ui: {
-    isHidden: e`NODE_ENV` === "production",
+    isHidden: async (data) =>
+      !(await a({ listKey: undefined, ...data })`AdminAnything`),
     hideCreate: e`NODE_ENV` === "production",
     hideDelete: e`NODE_ENV` === "production",
   },
   access: {
     operation: {
-      create: async (data) => await access(data)`CreateAnyAccess`,
+      create: async (data) => await a(data)`CreateAnyAccess`,
     },
     filter: {
       query: async (data) =>
         filterOr(
-          await access(data)`QueryAnyAccess`,
-          await access(data, {
+          await a(data)`QueryAnyAccess`,
+          await a(data, {
             name: { in: ["User", "Administrator", "Owner"] },
           })`QueryUserAccess`
         ),
       update: async (data) =>
-        await access(data, {
+        await a(data, {
           type: { notIn: AccessTypes.SYSTEM },
         })`UpdateAnyAccess`,
       delete: async (data) =>
-        await access(data, {
+        await a(data, {
           type: { notIn: AccessTypes.SYSTEM },
         })`DeleteAnyAccess`,
     },

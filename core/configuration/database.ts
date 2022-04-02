@@ -7,6 +7,8 @@ const db: DatabaseConfig<BaseKeystoneTypeInfo> = {
   url: `postgres://${e`POSTGRES_USER`}:${e`POSTGRES_PASSWORD`}@${e`POSTGRES_HOST`}:5432/${e`POSTGRES_DB`}`,
   useMigrations: true,
   idField: { kind: "cuid" },
+  prismaPreviewFeatures: ["filterJson"],
+  // enableLogging: true,
   async onConnect(ctx) {
     await accessSeed(ctx);
   },

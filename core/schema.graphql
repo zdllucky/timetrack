@@ -12,6 +12,27 @@ type User {
     skip: Int! = 0
   ): [Access!]
   accessCount(where: AccessWhereInput! = {}): Int
+  worksIn(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  worksInCount(where: DepartmentWhereInput! = {}): Int
+  manages(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  managesCount(where: DepartmentWhereInput! = {}): Int
+  headOf(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  headOfCount(where: DepartmentWhereInput! = {}): Int
   history: JSON
 }
 
@@ -31,6 +52,9 @@ input UserWhereInput {
   id: IDFilter
   login: StringFilter
   access: AccessManyRelationFilter
+  worksIn: DepartmentManyRelationFilter
+  manages: DepartmentManyRelationFilter
+  headOf: DepartmentManyRelationFilter
 }
 
 input IDFilter {
@@ -84,6 +108,12 @@ input AccessManyRelationFilter {
   none: AccessWhereInput
 }
 
+input DepartmentManyRelationFilter {
+  every: DepartmentWhereInput
+  some: DepartmentWhereInput
+  none: DepartmentWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   login: OrderDirection
@@ -98,6 +128,9 @@ input UserUpdateInput {
   login: String
   password: String
   access: AccessRelateToManyForUpdateInput
+  worksIn: DepartmentRelateToManyForUpdateInput
+  manages: DepartmentRelateToManyForUpdateInput
+  headOf: DepartmentRelateToManyForUpdateInput
   history: JSON
 }
 
@@ -106,6 +139,13 @@ input AccessRelateToManyForUpdateInput {
   set: [AccessWhereUniqueInput!]
   create: [AccessCreateInput!]
   connect: [AccessWhereUniqueInput!]
+}
+
+input DepartmentRelateToManyForUpdateInput {
+  disconnect: [DepartmentWhereUniqueInput!]
+  set: [DepartmentWhereUniqueInput!]
+  create: [DepartmentCreateInput!]
+  connect: [DepartmentWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -117,12 +157,20 @@ input UserCreateInput {
   login: String
   password: String
   access: AccessRelateToManyForCreateInput
+  worksIn: DepartmentRelateToManyForCreateInput
+  manages: DepartmentRelateToManyForCreateInput
+  headOf: DepartmentRelateToManyForCreateInput
   history: JSON
 }
 
 input AccessRelateToManyForCreateInput {
   create: [AccessCreateInput!]
   connect: [AccessWhereUniqueInput!]
+}
+
+input DepartmentRelateToManyForCreateInput {
+  create: [DepartmentCreateInput!]
+  connect: [DepartmentWhereUniqueInput!]
 }
 
 type Access {
@@ -198,6 +246,112 @@ input AccessCreateInput {
   type: AccessTypeType
 }
 
+type Department {
+  id: ID!
+  name: String
+  heads(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  headsCount(where: UserWhereInput! = {}): Int
+  managers(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  managersCount(where: UserWhereInput! = {}): Int
+  workers(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  workersCount(where: UserWhereInput! = {}): Int
+  isControlledBy(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  isControlledByCount(where: DepartmentWhereInput! = {}): Int
+  controls(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  controlsCount(where: DepartmentWhereInput! = {}): Int
+  history: JSON
+}
+
+input DepartmentWhereUniqueInput {
+  id: ID
+}
+
+input DepartmentWhereInput {
+  AND: [DepartmentWhereInput!]
+  OR: [DepartmentWhereInput!]
+  NOT: [DepartmentWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  heads: UserManyRelationFilter
+  managers: UserManyRelationFilter
+  workers: UserManyRelationFilter
+  isControlledBy: DepartmentManyRelationFilter
+  controls: DepartmentManyRelationFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input DepartmentOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input DepartmentUpdateInput {
+  name: String
+  heads: UserRelateToManyForUpdateInput
+  managers: UserRelateToManyForUpdateInput
+  workers: UserRelateToManyForUpdateInput
+  isControlledBy: DepartmentRelateToManyForUpdateInput
+  controls: DepartmentRelateToManyForUpdateInput
+  history: JSON
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input DepartmentUpdateArgs {
+  where: DepartmentWhereUniqueInput!
+  data: DepartmentUpdateInput!
+}
+
+input DepartmentCreateInput {
+  name: String
+  heads: UserRelateToManyForCreateInput
+  managers: UserRelateToManyForCreateInput
+  workers: UserRelateToManyForCreateInput
+  isControlledBy: DepartmentRelateToManyForCreateInput
+  controls: DepartmentRelateToManyForCreateInput
+  history: JSON
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -219,6 +373,15 @@ type Mutation {
   updateAccesses(data: [AccessUpdateArgs!]!): [Access]
   deleteAccess(where: AccessWhereUniqueInput!): Access
   deleteAccesses(where: [AccessWhereUniqueInput!]!): [Access]
+  createDepartment(data: DepartmentCreateInput!): Department
+  createDepartments(data: [DepartmentCreateInput!]!): [Department]
+  updateDepartment(
+    where: DepartmentWhereUniqueInput!
+    data: DepartmentUpdateInput!
+  ): Department
+  updateDepartments(data: [DepartmentUpdateArgs!]!): [Department]
+  deleteDepartment(where: DepartmentWhereUniqueInput!): Department
+  deleteDepartments(where: [DepartmentWhereUniqueInput!]!): [Department]
   endSession: Boolean!
   authenticateUserWithPassword(
     login: String!
@@ -264,6 +427,14 @@ type Query {
   ): [Access!]
   access(where: AccessWhereUniqueInput!): Access
   accessesCount(where: AccessWhereInput! = {}): Int
+  departments(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  department(where: DepartmentWhereUniqueInput!): Department
+  departmentsCount(where: DepartmentWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

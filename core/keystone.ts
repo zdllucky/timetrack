@@ -5,6 +5,7 @@ import server from "./configuration/server";
 import ui from "./configuration/ui";
 import lists from "./schema";
 import withAuth from "./configuration/auth";
+import graphql from "./configuration/graphql";
 
 export default config(
   withAuth({
@@ -13,5 +14,6 @@ export default config(
     db,
     ui,
     server,
+    graphql,
   })
 );

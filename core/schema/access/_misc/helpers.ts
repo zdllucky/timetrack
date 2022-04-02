@@ -19,12 +19,11 @@ export const declareAccess = (access: SystemAccess) =>
 /**
  * Checks list operation/filter and field access. Additional resolvers are passed to optional field.
  */
-export const access = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
+export const a = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
   data: A,
   optional: ((A) => MaybePromise<boolean>) | FilterOutput<T> = async () => true
 ) => {
   const rootCtx = (data.context as KeystoneContext).sudo();
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async ([a]: TemplateStringsArray): Promise<any> => {
     const allowedAccesses = a.split(",");

@@ -3,12 +3,14 @@ import { ListHooks } from "@keystone-6/core/dist/declarations/src/types/config/h
 import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/type-info";
 
 export const updateHistory: ListHooks<BaseListTypeInfo>["afterOperation"] =
-  async ({ operation, originalItem, item, resolvedData, context }) => {
+  async ({ listKey, operation, originalItem, item, resolvedData, context }) => {
+    console.log("Writing log: ", listKey, context.session);
+
     if (
       operation !== "delete" &&
       (operation === "create" || !resolvedData["history"])
     )
-      await context.sudo().query.User.updateOne({
+      await context.sudo().query[listKey].updateOne({
         where: { id: item.id as string },
         data: {
           history: [
@@ -25,7 +27,7 @@ export const updateHistory: ListHooks<BaseListTypeInfo>["afterOperation"] =
                     id: "system/public",
                   },
             },
-            ...(originalItem ? (originalItem.historyLogs as []) : []),
+            ...(originalItem ? (originalItem.history as []) : []),
           ],
         },
       });
