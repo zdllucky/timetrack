@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { e } from "../../helpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
-import { access, filterOr } from "./helpers";
+import { access, filterOr } from "./_misc/helpers";
 
 export enum AccessTypes {
   SYSTEM = "System",
@@ -17,6 +17,7 @@ const Access = list({
     isContainedIn: relationship({
       ref: "Access.contains",
       many: true,
+      // TODO: Add circular access checkup on access creation
     }),
     contains: relationship({
       ref: "Access.isContainedIn",

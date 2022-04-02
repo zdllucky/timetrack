@@ -29,7 +29,6 @@ export type SystemAccess = {
   label?: string;
   description?: string;
   contains?: Array<string>;
-  isContainedIn?: Array<string>;
   resolver?: (data: Array<unknown>) => MaybePromise<boolean> | undefined;
 };
 

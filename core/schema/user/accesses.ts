@@ -1,5 +1,5 @@
-import { SystemAccess } from "../access/types";
-import { declareAccess } from "../access/helpers";
+import { SystemAccess } from "../access/_misc/types";
+import { declareAccess } from "../access/_misc/helpers";
 
 export const userAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyUser" }),

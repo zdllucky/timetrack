@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { password, relationship, text } from "@keystone-6/core/fields";
-import { access, filterOr } from "../access/helpers";
-import { history, updateHistory } from "../plugins/history";
+import { access, filterOr } from "../access/_misc/helpers";
+import { history, updateHistory } from "../_misc/plugins/history";
 
 const User = list({
   fields: {
