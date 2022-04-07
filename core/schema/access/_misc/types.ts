@@ -31,5 +31,3 @@ export type SystemAccess = {
   contains?: Array<string>;
   resolver?: (data: Array<unknown>) => MaybePromise<boolean> | undefined;
 };
-
-export {};

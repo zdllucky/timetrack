@@ -43,6 +43,13 @@ model Department {
   history        Json?        @default("[]")
 }
 
+model Setting {
+  id          String @id @default(cuid())
+  projectID   String @default("horns_n_hooves")
+  projectName String @default("Horns&Hooves")
+  history     Json?  @default("[]")
+}
+
 enum AccessTypeType {
   System
   Custom

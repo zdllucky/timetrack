@@ -352,6 +352,43 @@ input UserRelateToManyForCreateInput {
   connect: [UserWhereUniqueInput!]
 }
 
+type Setting {
+  id: ID!
+  projectID: String
+  projectName: String
+  history: JSON
+}
+
+input SettingWhereUniqueInput {
+  id: ID
+}
+
+input SettingWhereInput {
+  AND: [SettingWhereInput!]
+  OR: [SettingWhereInput!]
+  NOT: [SettingWhereInput!]
+  id: IDFilter
+  projectID: StringFilter
+  projectName: StringFilter
+}
+
+input SettingOrderByInput {
+  id: OrderDirection
+  projectID: OrderDirection
+  projectName: OrderDirection
+}
+
+input SettingUpdateInput {
+  projectID: String
+  projectName: String
+  history: JSON
+}
+
+input SettingUpdateArgs {
+  where: SettingWhereUniqueInput!
+  data: SettingUpdateInput!
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -382,6 +419,11 @@ type Mutation {
   updateDepartments(data: [DepartmentUpdateArgs!]!): [Department]
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
   deleteDepartments(where: [DepartmentWhereUniqueInput!]!): [Department]
+  updateSetting(
+    where: SettingWhereUniqueInput!
+    data: SettingUpdateInput!
+  ): Setting
+  updateSettings(data: [SettingUpdateArgs!]!): [Setting]
   endSession: Boolean!
   authenticateUserWithPassword(
     login: String!
@@ -435,6 +477,14 @@ type Query {
   ): [Department!]
   department(where: DepartmentWhereUniqueInput!): Department
   departmentsCount(where: DepartmentWhereInput! = {}): Int
+  settings(
+    where: SettingWhereInput! = {}
+    orderBy: [SettingOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Setting!]
+  setting(where: SettingWhereUniqueInput!): Setting
+  settingsCount(where: SettingWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

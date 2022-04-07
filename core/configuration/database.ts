@@ -1,6 +1,7 @@
 import { e } from "../helpers";
 import { BaseKeystoneTypeInfo, DatabaseConfig } from "@keystone-6/core/types";
 import accessSeed from "./seeds/accessSeed";
+import settingSeed from "./seeds/settingSeed";
 
 const db: DatabaseConfig<BaseKeystoneTypeInfo> = {
   provider: "postgresql",
@@ -11,6 +12,7 @@ const db: DatabaseConfig<BaseKeystoneTypeInfo> = {
   // enableLogging: true,
   async onConnect(ctx) {
     await accessSeed(ctx);
+    await settingSeed(ctx);
   },
 };
 

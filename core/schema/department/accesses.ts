@@ -1,5 +1,4 @@
-import { SystemAccess } from "../access/_misc/types";
-import { a, declareAccess } from "../access/_misc/helpers";
+import { a, declareAccess, SystemAccess } from "../access";
 
 export const departmentAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyDepartment" }),
@@ -7,8 +6,6 @@ export const departmentAccesses: Array<SystemAccess> = [
   declareAccess({ name: "CreateAnyDepartment" }),
   declareAccess({ name: "UpdateAnyDepartment" }),
   declareAccess({ name: "DeleteAnyDepartment" }),
-  declareAccess({ name: "HeadDepartment" }),
-  declareAccess({ name: "ManageDepartment" }),
   declareAccess({
     name: "AdminAnyDepartment",
     contains: [

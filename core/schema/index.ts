@@ -1,16 +1,17 @@
 import User from "./user";
-import Access from "./access";
+import Access, { declareAccess, SystemAccess } from "./access";
 import { accessAccesses } from "./access/accesses";
-import { SystemAccess } from "./access/_misc/types";
 import { userAccesses } from "./user/accesses";
-import { declareAccess } from "./access/_misc/helpers";
 import { departmentAccesses } from "./department/accesses";
 import { Department } from "./department";
+import { settingAccesses } from "./setting/accesses";
+import Setting from "./setting";
 
 export const accesses: Array<SystemAccess> = [
   ...accessAccesses,
   ...userAccesses,
   ...departmentAccesses,
+  ...settingAccesses,
   declareAccess({
     name: "AdminAnything",
     contains: ["AdminAnyUser", "AdminAnyAccess", "AdminAnyDepartment"],
@@ -27,11 +28,17 @@ export const accesses: Array<SystemAccess> = [
       "DeleteAnyDepartment",
       "CreateAnyDepartment",
       "UpdateAnyDepartment",
+      "UpdateAnySetting",
     ],
   }),
   declareAccess({
     name: "User",
-    contains: ["QueryAnyUser", "QueryUserAccess", "QueryAnyDepartment"],
+    contains: [
+      "QueryAnyUser",
+      "QueryUserAccess",
+      "QueryAnyDepartment",
+      "QueryAnySetting",
+    ],
   }),
 ];
 
@@ -39,6 +46,7 @@ const lists = {
   User,
   Access,
   Department,
+  Setting,
 };
 
 export default lists;

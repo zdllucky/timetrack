@@ -7,15 +7,21 @@
   "author": "zdllucky",
   "license": "MIT",
   "private": true,
+  "devDependencies": {
+    "@types/redis": "^2.8.32"
+  },
   "dependencies": {
-    "@keystone-6/auth": "^1.0.2",
-    "@keystone-6/core": "^1.0.1",
-    "@keystone-6/fields-document": "^1.0.1",
-    "@keystone-6/session-store-redis": "^1.0.0",
+    "@keystone-6/auth": "^2.0.0",
+    "@keystone-6/core": "^1.1.0",
+    "@keystone-6/session-store-redis": "^2.0.0",
     "redis": "^3.1.2"
   },
+  "peerDependencies": {
+    "react": "17",
+    "react-dom": "17"
+  },
   "scripts": {
-    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev",
+    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status"
   }
