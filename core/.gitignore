@@ -6,3 +6,4 @@ keystone.db-journal
 .data
 yarn-error.log
 devExplore.graphql
+coverage

@@ -195,7 +195,7 @@ type Access {
 
 enum AccessTypeType {
   System
-  Custom
+  User
 }
 
 input AccessWhereUniqueInput {

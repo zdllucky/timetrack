@@ -28,7 +28,7 @@ model Access {
   name             String         @unique @default("")
   isContainedIn    Access[]       @relation("Access_contains")
   contains         Access[]       @relation("Access_contains")
-  type             AccessTypeType @default(Custom)
+  type             AccessTypeType @default(System)
   from_User_access User[]         @relation("User_access")
 }
 
@@ -52,5 +52,5 @@ model Setting {
 
 enum AccessTypeType {
   System
-  Custom
+  User
 }

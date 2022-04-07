@@ -32,8 +32,8 @@ const User = list({
       ref: "Access",
       many: true,
       access: {
-        update: async (data) => await a(data)`UpdateAnyAccess`,
-        create: async (data) => await a(data)`CreateAnyAccess`,
+        update: async (data) => await a(data)`Owner`,
+        create: async (data) => await a(data)`Owner`,
       },
     }),
     worksIn: relationship({ ref: "Department.workers", many: true }),

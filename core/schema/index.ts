@@ -1,5 +1,5 @@
 import User from "./user";
-import Access, { declareAccess, SystemAccess } from "./access";
+import Access, { AccessTypes, declareAccess, SystemAccess } from "./access";
 import { accessAccesses } from "./access/accesses";
 import { userAccesses } from "./user/accesses";
 import { departmentAccesses } from "./department/accesses";
@@ -18,10 +18,12 @@ export const accesses: Array<SystemAccess> = [
   }),
   declareAccess({
     name: "Owner",
+    type: AccessTypes.USER,
     contains: ["Administrator"],
   }),
   declareAccess({
     name: "Administrator",
+    type: AccessTypes.USER,
     contains: [
       "User",
       "ElevateUserToAdmin",
@@ -33,9 +35,10 @@ export const accesses: Array<SystemAccess> = [
   }),
   declareAccess({
     name: "User",
+    type: AccessTypes.USER,
     contains: [
       "QueryAnyUser",
-      "QueryUserAccess",
+      "QueryAnyAccess",
       "QueryAnyDepartment",
       "QueryAnySetting",
     ],

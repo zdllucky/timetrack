@@ -8,7 +8,12 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@types/redis": "^2.8.32"
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.23",
+    "@types/redis": "^2.8.32",
+    "dotenv": "^16.0.0",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4"
   },
   "dependencies": {
     "@keystone-6/auth": "^2.0.0",
@@ -21,8 +26,9 @@
     "react-dom": "17"
   },
   "scripts": {
-    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
+    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev",
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
-    "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status"
+    "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status",
+    "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000"
   }
 }

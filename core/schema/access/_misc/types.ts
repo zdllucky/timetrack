@@ -3,6 +3,7 @@ import {
   KeystoneContextFromListTypeInfo,
 } from "@keystone-6/core/types";
 import { MaybePromise } from "@keystone-6/core/dist/declarations/src/types/utils";
+import type { AccessTypes } from "../index";
 
 /**
  * Proxy type aggregator
@@ -27,6 +28,7 @@ export declare type FilterOutput<ListTypeInfo extends BaseListTypeInfo> =
 export type SystemAccess = {
   name: string;
   label?: string;
+  type?: AccessTypes;
   description?: string;
   contains?: Array<string>;
   resolver?: (data: Array<unknown>) => MaybePromise<boolean> | undefined;

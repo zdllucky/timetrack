@@ -4,6 +4,7 @@ import {
   MaybePromise,
 } from "@keystone-6/core/types";
 import { BaseAccessArgs, FilterOutput, SystemAccess } from "./types";
+import { AccessTypes } from "../index";
 
 /**
  * Adds new system access
@@ -14,6 +15,7 @@ export const declareAccess = (access: SystemAccess) =>
     label: access.label,
     description: access.description,
     contains: access.contains || [],
+    type: AccessTypes.SYSTEM,
   };
 
 /**
