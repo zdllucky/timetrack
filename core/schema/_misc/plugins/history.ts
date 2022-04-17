@@ -4,8 +4,6 @@ import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/t
 
 export const updateHistory: ListHooks<BaseListTypeInfo>["afterOperation"] =
   async ({ listKey, operation, originalItem, item, resolvedData, context }) => {
-    console.log("Writing log: ", listKey, context.session);
-
     if (
       operation !== "delete" &&
       (operation === "create" || !resolvedData["history"])

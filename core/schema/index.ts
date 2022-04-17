@@ -6,6 +6,7 @@ import { departmentAccesses } from "./department/accesses";
 import { Department } from "./department";
 import { settingAccesses } from "./setting/accesses";
 import Setting from "./setting";
+import { ListSchemaConfig } from "@keystone-6/core/types";
 
 export const accesses: Array<SystemAccess> = [
   ...accessAccesses,
@@ -18,12 +19,12 @@ export const accesses: Array<SystemAccess> = [
   }),
   declareAccess({
     name: "Owner",
-    type: AccessTypes.USER,
+    type: AccessTypes.ROLE,
     contains: ["Administrator"],
   }),
   declareAccess({
     name: "Administrator",
-    type: AccessTypes.USER,
+    type: AccessTypes.ROLE,
     contains: [
       "User",
       "ElevateUserToAdmin",
@@ -35,7 +36,7 @@ export const accesses: Array<SystemAccess> = [
   }),
   declareAccess({
     name: "User",
-    type: AccessTypes.USER,
+    type: AccessTypes.ROLE,
     contains: [
       "QueryAnyUser",
       "QueryAnyAccess",
@@ -45,7 +46,7 @@ export const accesses: Array<SystemAccess> = [
   }),
 ];
 
-const lists = {
+const lists: ListSchemaConfig = {
   User,
   Access,
   Department,

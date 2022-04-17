@@ -7,3 +7,6 @@ keystone.db-journal
 yarn-error.log
 devExplore.graphql
 coverage
+graphql.schema.json
+schema_types.d.ts
+migrations

@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { password, relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr } from "../access/_misc/helpers";
+import { a, filterOr, pa } from "../access";
 import { history, updateHistory } from "../_misc/plugins/history";
 import { UserAccessResolvers } from "./accesses";
 
@@ -55,7 +55,7 @@ const User = list({
         ),
       delete: async (data) =>
         await a(data, {
-          access: { none: { name: { in: ["Owner"] } } },
+          access: { none: { name: { in: await pa(data)`Owner` } } },
         })`DeleteAnyUser`,
     },
   },

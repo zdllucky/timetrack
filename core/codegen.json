@@ -1,0 +1,16 @@
+{
+  "overwrite": true,
+  "schema": "schema.graphql",
+  "generates": {
+    "./schema_types.d.ts": {
+      "plugins": [
+        "typescript"
+      ]
+    },
+    "./graphql.schema.json": {
+      "plugins": [
+        "introspection"
+      ]
+    }
+  }
+}

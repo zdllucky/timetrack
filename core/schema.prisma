@@ -52,5 +52,5 @@ model Setting {
 
 enum AccessTypeType {
   System
-  User
+  Role
 }

@@ -1,4 +1,5 @@
 import { a, declareAccess, SystemAccess } from "../access";
+import { QueryUsersArgs } from "../../schema_types";
 
 export const departmentAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyDepartment" }),
@@ -35,7 +36,7 @@ export const DepartmentAccessResolvers = {
       data,
       async ({ session: { itemId }, item, context }) =>
         !!(
-          await context.sudo().query.User.findMany({
+          await context.sudo().query.User.findMany(<QueryUsersArgs>{
             where: {
               id: { equals: itemId },
               headOf: { some: { id: { equals: item.id } } },

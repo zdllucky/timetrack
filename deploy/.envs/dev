@@ -9,3 +9,7 @@ POSTGRES_HOST=localhost
 
 # Dev redis args
 SESSION_SECRET=yLG4GI1D76IS7vOW3olZZ6C0qbUV4Jaa
+
+# Dev core init args
+OWNER_USERNAME=zdllucky
+OWNER_PASSWORD=test123123

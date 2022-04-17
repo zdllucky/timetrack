@@ -5,7 +5,7 @@ import { a } from "./_misc/helpers";
 
 export enum AccessTypes {
   SYSTEM = "System",
-  USER = "User",
+  ROLE = "Role",
 }
 
 const Access = list({
@@ -47,7 +47,7 @@ const Access = list({
     filter: {
       query: async (data) =>
         await a(data, {
-          type: { equals: AccessTypes.USER },
+          type: { equals: AccessTypes.ROLE },
         })`QueryAnyAccess`,
     },
   },

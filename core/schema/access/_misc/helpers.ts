@@ -5,6 +5,7 @@ import {
 } from "@keystone-6/core/types";
 import { BaseAccessArgs, FilterOutput, SystemAccess } from "./types";
 import { AccessTypes } from "../index";
+import { QueryAccessesArgs } from "../../../schema_types";
 
 /**
  * Adds new system access
@@ -15,8 +16,33 @@ export const declareAccess = (access: SystemAccess) =>
     label: access.label,
     description: access.description,
     contains: access.contains || [],
-    type: AccessTypes.SYSTEM,
+    type: access.type ?? AccessTypes.SYSTEM,
   };
+
+const filterUnique = <T>(arr: Array<T>) => Array.from<T>(new Set<T>(arr));
+
+export const pa = ({ context }: { context: KeystoneContext }) => {
+  return async ([a]: TemplateStringsArray): Promise<string[]> => {
+    let parentAccesses = a.split(",");
+
+    let currentAccesses = filterUnique(parentAccesses);
+
+    while (currentAccesses.length) {
+      currentAccesses = filterUnique(
+        (
+          await context.sudo().query.Access.findMany(<QueryAccessesArgs>{
+            where: { contains: { some: { name: { in: currentAccesses } } } },
+            query: "name",
+          })
+        ).map(({ name }) => name)
+      );
+
+      parentAccesses = filterUnique([...parentAccesses, ...currentAccesses]);
+    }
+
+    return parentAccesses;
+  };
+};
 
 /**
  * Checks list operation/filter and field access. Additional resolvers are passed to optional field.
@@ -41,7 +67,7 @@ export const a = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
           : (optional as FilterOutput<T>);
       }
 
-      subAccesses = await rootCtx.query.Access.findMany({
+      subAccesses = await rootCtx.query.Access.findMany(<QueryAccessesArgs>{
         where: {
           isContainedIn: {
             some: { name: { in: subAccesses.map(({ name }) => name) } },
