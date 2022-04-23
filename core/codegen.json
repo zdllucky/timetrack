@@ -5,7 +5,10 @@
     "./schema_types.d.ts": {
       "plugins": [
         "typescript"
-      ]
+      ],
+      "config": {
+        "maybeValue": "T"
+      }
     },
     "./graphql.schema.json": {
       "plugins": [

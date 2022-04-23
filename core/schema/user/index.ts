@@ -21,7 +21,12 @@ const User = list({
         },
         itemView: {
           fieldMode: async (data) =>
-            (await UserAccessResolvers.updateOwnItem(data)) ? "edit" : "read",
+            (await UserAccessResolvers.updateOwnItem({
+              listKey: "User",
+              ...data,
+            }))
+              ? "edit"
+              : "read",
         },
       },
       access: {

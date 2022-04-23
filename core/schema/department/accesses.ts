@@ -1,4 +1,4 @@
-import { a, declareAccess, SystemAccess } from "../access";
+import { a, AccessResolvers, declareAccess, SystemAccess } from "../access";
 import { QueryUsersArgs } from "../../schema_types";
 
 export const departmentAccesses: Array<SystemAccess> = [
@@ -18,7 +18,7 @@ export const departmentAccesses: Array<SystemAccess> = [
   }),
 ];
 
-export const DepartmentAccessResolvers = {
+export const DepartmentAccessResolvers: AccessResolvers = {
   headOfFilter: async (data) =>
     await a(data, {
       heads: { some: { id: { equals: data.session.itemId } } },

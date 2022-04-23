@@ -23,5 +23,5 @@ module.exports = {
     "eslint-plugin-react",
     "@typescript-eslint",
   ],
-  ignorePatterns: ["**/*.d.ts"],
+  ignorePatterns: ["**/*.d.ts", "**/node_modules/**"],
 };

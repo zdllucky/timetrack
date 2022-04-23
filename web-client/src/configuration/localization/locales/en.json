@@ -1,0 +1,14 @@
+{
+  "p": {
+    "login": {
+      "appbar": "Sign in"
+    }
+  },
+  "locale.button": "To Russian",
+  "sign_in": "Sign in",
+  "dashboard": "Dashboard",
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
+  }
+}

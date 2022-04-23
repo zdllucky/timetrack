@@ -5,3 +5,5 @@ keystone.db
 !*.secret
 deploy/.envs/developmentdeploy/.envs/dev
 /deploy/.data/dev-db/
+/resources/
+.DS_Store

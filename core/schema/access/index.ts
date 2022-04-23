@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
-import { e } from "../../helpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
 import { a } from "./_misc/helpers";
+import { e } from "../../helpers";
 
 export enum AccessTypes {
   SYSTEM = "System",
@@ -34,7 +34,7 @@ const Access = list({
   },
   ui: {
     isHidden: async (data) =>
-      !(await a({ listKey: undefined, ...data })`AdminAnything`),
+      !(await a({ listKey: "Access", ...data })`AdminAnything`),
     hideCreate: e`NODE_ENV` === "production",
     hideDelete: e`NODE_ENV` === "production",
   },

@@ -1,0 +1,11 @@
+query authenticatedItem {
+    authenticatedItem {
+        ... on User {
+            id
+            login
+            access {
+                name
+            }
+        }
+    }
+}

@@ -1,5 +1,11 @@
 # Core args
 DEPLOY_ENV=dev
+CORE_PORT=4000
+
+# Web client args
+REACT_APP_CORE_HOST=192.168.31.205
+REACT_APP_NODE_ENV=development
+REACT_APP_CORE_PORT=4000
 
 # Dev database args
 POSTGRES_PASSWORD=test123123

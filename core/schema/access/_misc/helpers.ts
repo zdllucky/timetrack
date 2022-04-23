@@ -5,7 +5,7 @@ import {
 } from "@keystone-6/core/types";
 import { BaseAccessArgs, FilterOutput, SystemAccess } from "./types";
 import { AccessTypes } from "../index";
-import { QueryAccessesArgs } from "../../../schema_types";
+import type { Access, QueryAccessesArgs } from "../../../schema_types";
 
 /**
  * Adds new system access
@@ -49,32 +49,35 @@ export const pa = ({ context }: { context: KeystoneContext }) => {
  */
 export const a = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
   data: A,
-  optional: ((A) => MaybePromise<boolean>) | FilterOutput<T> = async () => true
+  optional:
+    | ((arg: A & { item?: T["item"] }) => MaybePromise<boolean>)
+    | FilterOutput<T> = async () => true
 ) => {
   const rootCtx = (data.context as KeystoneContext).sudo();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async ([a]: TemplateStringsArray): Promise<any> => {
     const allowedAccesses = a.split(",");
 
-    let subAccesses = data.session?.data?.access;
+    let subAccesses: readonly Record<"name", string>[] =
+      data.session?.data?.access;
 
     if (!subAccesses) return false;
 
     while (subAccesses?.length) {
       if (subAccesses.some(({ name }) => allowedAccesses.includes(name))) {
         return typeof optional === "function"
-          ? await (optional as (A) => MaybePromise<boolean>)(data)
+          ? await (optional as (arg: A) => MaybePromise<boolean>)(data)
           : (optional as FilterOutput<T>);
       }
 
-      subAccesses = await rootCtx.query.Access.findMany(<QueryAccessesArgs>{
+      subAccesses = (await rootCtx.query.Access.findMany(<QueryAccessesArgs>{
         where: {
           isContainedIn: {
             some: { name: { in: subAccesses.map(({ name }) => name) } },
           },
         },
         query: "name",
-      });
+      })) as Array<Required<Pick<Access, "name">>>;
     }
 
     return false;

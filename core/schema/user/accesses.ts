@@ -1,4 +1,4 @@
-import { a, declareAccess, pa, SystemAccess } from "../access";
+import { a, AccessResolvers, declareAccess, pa, SystemAccess } from "../access";
 
 export const userAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyUser" }),
@@ -17,7 +17,7 @@ export const userAccesses: Array<SystemAccess> = [
   }),
 ];
 
-export const UserAccessResolvers = {
+export const UserAccessResolvers: AccessResolvers = {
   manageFilter: async (data) =>
     await a(data, {
       access: { none: { name: { in: await pa(data)`Owner` } } },
@@ -27,8 +27,5 @@ export const UserAccessResolvers = {
       id: { equals: data.session.itemId },
     })`User`,
   updateOwnItem: async (data) =>
-    await a(
-      data,
-      ({ session: { itemId }, item: { id } }) => itemId === id
-    )`User`,
+    await a(data, ({ session: { itemId }, item }) => itemId === item?.id)`User`,
 };

@@ -25,7 +25,7 @@ export default async (ctx: KeystoneContext) => {
   }
 
   for (const access of accesses) {
-    if (access.contains.length)
+    if (access.contains?.length)
       await ctx.query.Access.updateOne(<MutationUpdateUserArgs>{
         where: { id: providedAccesses[access.name] },
         data: {
