@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 git secret hide
-git add deploy/.envs/**
+git add deploy/.envs/**.secret
 git add .gitsecret/**

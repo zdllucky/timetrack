@@ -3,7 +3,7 @@ keystone.db
 .idea
 .gitsecret/keys/random_seed
 !*.secret
-deploy/.envs/dev
+/deploy/.envs/dev
 /deploy/.data/dev-db/
 /resources/
 .DS_Store
