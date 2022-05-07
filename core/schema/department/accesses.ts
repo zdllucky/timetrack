@@ -39,7 +39,7 @@ export const DepartmentAccessResolvers: AccessResolvers = {
           await context.sudo().query.User.findMany(<QueryUsersArgs>{
             where: {
               id: { equals: itemId },
-              headOf: { some: { id: { equals: item.id } } },
+              headOf: { some: { id: { equals: item?.id } } },
             },
             take: 1,
           })

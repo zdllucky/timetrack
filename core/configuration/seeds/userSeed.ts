@@ -1,8 +1,9 @@
 import { KeystoneContext } from "@keystone-6/core/types";
 import { MutationCreateUserArgs, QueryUsersArgs } from "../../schema_types";
 import { e } from "../../helpers";
+import { DatabaseInitFunction } from "../database";
 
-export default async (ctx: KeystoneContext) => {
+const userSeed: DatabaseInitFunction = async (ctx: KeystoneContext) => {
   const amount = await ctx.db.User.findMany(<QueryUsersArgs>{
     where: { access: { some: { name: { equals: "Owner" } } } },
     take: 1,
@@ -18,3 +19,5 @@ export default async (ctx: KeystoneContext) => {
       },
     });
 };
+
+export default userSeed;

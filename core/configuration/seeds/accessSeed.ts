@@ -1,12 +1,12 @@
-import { KeystoneContext } from "@keystone-6/core/types";
 import { accesses } from "../../schema";
 import {
   MutationCreateUserArgs,
   MutationUpdateUserArgs,
   QueryUserArgs,
 } from "../../schema_types";
+import { DatabaseInitFunction } from "../database";
 
-export default async (ctx: KeystoneContext) => {
+const accessSeed: DatabaseInitFunction = async (ctx) => {
   const providedAccesses: Record<string, string> = {};
 
   for (const { name, type } of accesses) {
@@ -37,3 +37,5 @@ export default async (ctx: KeystoneContext) => {
       });
   }
 };
+
+export default accessSeed;

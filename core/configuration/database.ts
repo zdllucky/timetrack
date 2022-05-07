@@ -18,4 +18,6 @@ const db: DatabaseConfig<BaseKeystoneTypeInfo> = {
   },
 };
 
+export type DatabaseInitFunction = NonNullable<typeof db["onConnect"]>;
+
 export default db;

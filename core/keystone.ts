@@ -2,7 +2,7 @@ import { config } from "@keystone-6/core";
 import { db, graphql, server, session, ui, withAuth } from "./configuration";
 import lists from "./schema";
 
-export default config(
+const keystoneConfig = config(
   withAuth({
     lists,
     session,
@@ -12,3 +12,5 @@ export default config(
     graphql,
   })
 );
+
+export default keystoneConfig;
