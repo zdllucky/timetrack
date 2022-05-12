@@ -29,7 +29,8 @@
     "react-dom": "17"
   },
   "scripts": {
-    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
+    "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev",
+    "dev:clear": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status",
     "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000",

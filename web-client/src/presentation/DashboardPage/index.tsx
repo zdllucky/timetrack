@@ -9,11 +9,6 @@ const Dashboard: FC = () => {
   const isAuthenticated: boolean = useIsAuthenticated();
   const { t, i18n } = useTranslation("translations");
 
-  // useLayoutEffect(() => {
-  //   if (!isAuthenticated && !isLoading)
-
-  // });
-
   return (
     <Box>
       <AppBar position="sticky" variant="elevation">

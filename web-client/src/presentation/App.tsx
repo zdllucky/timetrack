@@ -6,28 +6,25 @@ import {
   GlobalStyles,
   ThemeProvider,
 } from "@mui/material";
-import Dashboard from "./dashboard";
 import { useLocalTheme } from "../app/hooks/theme";
 import { useMemo } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./login";
-import AuthRoute from "./common/AuthRoute";
+import LoginPage from "./LoginPage";
 import { globalStyle } from "../configuration/styles/global";
 import { SnackbarProvider } from "notistack";
+import { useIsAuthenticated } from "../app/hooks/auth";
+import MainScaffold from "./MainScaffold";
 
 const App = () => (
   <StoreProvider store={store}>
-    <BrowserRouter>
-      <StyledApp />
-    </BrowserRouter>
+    <StyledApp />
   </StoreProvider>
 );
 
 const StyledApp = () => {
+  const isAuthenticated = useIsAuthenticated();
   const {
     theme: { mode },
   } = useLocalTheme();
-
   const theme = useMemo(
     () =>
       createTheme({
@@ -48,17 +45,18 @@ const StyledApp = () => {
           horizontal: "center",
         }}
       >
-        <Routes>
-          <Route
-            index
-            element={
-              <AuthRoute>
-                <Dashboard />
-              </AuthRoute>
-            }
-          />
-          <Route path="login" element={<LoginPage />} />
-        </Routes>
+        {isAuthenticated ? <MainScaffold /> : <LoginPage />}
+        {/*<Routes>*/}
+        {/*  <Route*/}
+        {/*    index*/}
+        {/*    element={*/}
+        {/*      <AuthRoute>*/}
+        {/*        */}
+        {/*      </AuthRoute>*/}
+        {/*    }*/}
+        {/*  />*/}
+        {/*  <Route path="login" element={} />*/}
+        {/*</Routes>*/}
       </SnackbarProvider>
     </ThemeProvider>
   );
