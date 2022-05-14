@@ -2539,7 +2539,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.175":
+"@types/lodash@^4.14.175", "@types/lodash@^4.14.182":
   "integrity" "sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q=="
   "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.182.tgz"
   "version" "4.14.182"
@@ -11440,13 +11440,6 @@
   "integrity" "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
   "resolved" "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
-
-"yup-locale-ru@^1.0.0":
-  "integrity" "sha512-wPWZwuZb5NUjpgSyljEK2pXCWeIN6cBymfbQyS62cFeFmaLrQebe6CKVjCw3itoNty/+cV3DIP+oAYCzGuLWAg=="
-  "resolved" "https://registry.npmjs.org/yup-locale-ru/-/yup-locale-ru-1.0.0.tgz"
-  "version" "1.0.0"
-  dependencies:
-    "yup" "^0.32.11"
 
 "yup@^0.32.11":
   "integrity" "sha512-Z2Fe1bn+eLstG8DRR6FTavGD+MeAwyfmouhHsIUgaADz8jvFKbO/fXc2trJKZg+5EBjh4gGm3iU/t3onKlXHIg=="

@@ -7,12 +7,12 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { useLocalTheme } from "../app/hooks/theme";
-import { useMemo } from "react";
+import { createContext, useMemo, useState } from "react";
 import LoginPage from "./LoginPage";
 import { globalStyle } from "../configuration/styles/global";
 import { SnackbarProvider } from "notistack";
 import { useIsAuthenticated } from "../app/hooks/auth";
-import MainScaffold from "./MainScaffold";
+import DashboardPage from "./DashboardPage";
 
 const App = () => (
   <StoreProvider store={store}>
@@ -37,28 +37,53 @@ const StyledApp = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles styles={globalStyle} />
       <CssBaseline />
+      <GlobalStyles styles={globalStyle} />
       <SnackbarProvider
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
         }}
       >
-        {isAuthenticated ? <MainScaffold /> : <LoginPage />}
-        {/*<Routes>*/}
-        {/*  <Route*/}
-        {/*    index*/}
-        {/*    element={*/}
-        {/*      <AuthRoute>*/}
-        {/*        */}
-        {/*      </AuthRoute>*/}
-        {/*    }*/}
-        {/*  />*/}
-        {/*  <Route path="login" element={} />*/}
-        {/*</Routes>*/}
+        {isAuthenticated ? <RoutedApp /> : <LoginPage />}
       </SnackbarProvider>
     </ThemeProvider>
+  );
+};
+
+const mainTabs = [{ name: "main" } /*, { name: "table" }, { name: "user" }*/];
+
+const TabsContext = createContext<any>(null);
+
+const RoutedApp = () => {
+  const [currentTabIndex, setCurrentTabIndex] = useState<0 | 1 | 2>(0);
+
+  return (
+    <TabsContext.Provider
+      value={{
+        current: {
+          index: currentTabIndex,
+          name: mainTabs[currentTabIndex].name,
+        },
+        switchTab: setCurrentTabIndex,
+      }}
+    >
+      {mainTabs.map(({ name }) => (
+        <DashboardPage key={name} />
+      ))}
+
+      {/*<Routes>*/}
+      {/*  <Route*/}
+      {/*    index*/}
+      {/*    element={*/}
+      {/*      <AuthRoute>*/}
+      {/*        */}
+      {/*      </AuthRoute>*/}
+      {/*    }*/}
+      {/*  />*/}
+      {/*  <Route path="login" element={} />*/}
+      {/*</Routes>*/}
+    </TabsContext.Provider>
   );
 };
 

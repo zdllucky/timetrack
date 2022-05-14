@@ -1,25 +1,42 @@
 import { FC } from "react";
-import { AppBar, Box, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AuthForm from "./blocks/AuthForm";
+import Scaffold from "../Scaffold";
 
 const LoginPage: FC = () => {
   const { t } = useTranslation("translations");
 
   return (
-    <Box height="100vh" flexDirection="column" display="flex">
-      <AppBar position="static" elevation={0} color="transparent">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {t`p.login.appbar`}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Stack flexGrow={1} />
-      <Stack spacing={0} padding={2} overflow="auto">
+    <Scaffold
+      flexDirection="column"
+      display="flex"
+      fullscreen
+      appBar={
+        <AppBar position="static" elevation={0} color="transparent">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {t`p.login.appbar`}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      }
+    >
+      <Stack
+        padding={2}
+        height="100%"
+        flexDirection="column"
+        flexWrap="nowrap"
+        overflow="auto"
+        sx={{
+          "& > :first-child": {
+            mt: "auto",
+          },
+        }}
+      >
         <AuthForm />
       </Stack>
-    </Box>
+    </Scaffold>
   );
 };
 
