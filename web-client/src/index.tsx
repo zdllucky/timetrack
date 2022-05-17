@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./presentation/App";
 import reportWebVitals from "./reportWebVitals";
 import "./configuration/localization/";
+import App from "presentation/App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

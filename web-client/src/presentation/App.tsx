@@ -1,90 +1,58 @@
-import { store } from "app/store";
-import { Provider as StoreProvider } from "react-redux";
-import {
-  createTheme,
-  CssBaseline,
-  GlobalStyles,
-  ThemeProvider,
-} from "@mui/material";
-import { useLocalTheme } from "../app/hooks/theme";
-import { createContext, useMemo, useState } from "react";
 import LoginPage from "./LoginPage";
-import { globalStyle } from "../configuration/styles/global";
 import { SnackbarProvider } from "notistack";
 import { useIsAuthenticated } from "../app/hooks/auth";
-import DashboardPage from "./DashboardPage";
+import StyleProvider from "./StyleProvider";
+import TabsProvider, { useTabs } from "./TabsProvider";
+import { StackNavigator } from "./Router";
+import { FC } from "react";
 
-const App = () => (
-  <StoreProvider store={store}>
-    <StyledApp />
-  </StoreProvider>
-);
+import { store } from "../app/store";
+import { Provider as StoreProvider } from "react-redux";
+import TabsConfig from "./TabsProvider/config";
 
-const StyledApp = () => {
-  const isAuthenticated = useIsAuthenticated();
-  const {
-    theme: { mode },
-  } = useLocalTheme();
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
+const AppWithNavigation: FC = () => {
+  const { currentTab } = useTabs();
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <GlobalStyles styles={globalStyle} />
+    <>
+      {TabsConfig.map(({ ctx, root }, index) => (
+        <StackNavigator
+          root={root}
+          ctx={() => ctx}
+          hidden={currentTab !== index}
+        />
+      ))}
+    </>
+  );
+};
+
+const AppWithTabs: FC = () => {
+  const isAuthenticated = useIsAuthenticated();
+
+  return (
+    <StyleProvider>
       <SnackbarProvider
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
         }}
       >
-        {isAuthenticated ? <RoutedApp /> : <LoginPage />}
+        {isAuthenticated ? (
+          <TabsProvider>
+            <AppWithNavigation />
+          </TabsProvider>
+        ) : (
+          <LoginPage />
+        )}
       </SnackbarProvider>
-    </ThemeProvider>
+    </StyleProvider>
   );
 };
 
-const mainTabs = [{ name: "main" } /*, { name: "table" }, { name: "user" }*/];
+const AppWithStore: FC = () => (
+  <StoreProvider store={store}>
+    <AppWithTabs />
+  </StoreProvider>
+);
 
-const TabsContext = createContext<any>(null);
-
-const RoutedApp = () => {
-  const [currentTabIndex, setCurrentTabIndex] = useState<0 | 1 | 2>(0);
-
-  return (
-    <TabsContext.Provider
-      value={{
-        current: {
-          index: currentTabIndex,
-          name: mainTabs[currentTabIndex].name,
-        },
-        switchTab: setCurrentTabIndex,
-      }}
-    >
-      {mainTabs.map(({ name }) => (
-        <DashboardPage key={name} />
-      ))}
-
-      {/*<Routes>*/}
-      {/*  <Route*/}
-      {/*    index*/}
-      {/*    element={*/}
-      {/*      <AuthRoute>*/}
-      {/*        */}
-      {/*      </AuthRoute>*/}
-      {/*    }*/}
-      {/*  />*/}
-      {/*  <Route path="login" element={} />*/}
-      {/*</Routes>*/}
-    </TabsContext.Provider>
-  );
-};
-
-export default App;
+export default AppWithStore;

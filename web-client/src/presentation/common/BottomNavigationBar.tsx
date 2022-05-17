@@ -1,15 +1,22 @@
 import { FC } from "react";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ArchiveIcon from "@mui/icons-material/Archive";
+import { useTabs } from "../TabsProvider";
+import TabsConfig from "../TabsProvider/config";
 
-const BottomNavigationBar: FC = () => (
-  <BottomNavigation showLabels value={1} onChange={(event, newValue) => {}}>
-    <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-    <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-    <BottomNavigationAction label="Archive" icon={<ArchiveIcon />} />
-  </BottomNavigation>
-);
+const BottomNavigationBar: FC = () => {
+  const { currentTab, setTab } = useTabs();
+
+  return (
+    <BottomNavigation
+      showLabels
+      value={currentTab}
+      onChange={(event, newValue) => setTab(newValue)}
+    >
+      {TabsConfig.map(({ label, icon }) => (
+        <BottomNavigationAction label={label} icon={icon} />
+      ))}
+    </BottomNavigation>
+  );
+};
 
 export default BottomNavigationBar;

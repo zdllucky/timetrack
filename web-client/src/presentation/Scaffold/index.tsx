@@ -22,11 +22,9 @@ const Scaffold: FC<
 
   const defaultScaffoldBoxProps: Partial<BoxProps> = useMemo(
     () => ({
-      height: `calc(100vh - ${fullscreen || bottomBar ? "0px" : "56px"})`,
+      maxHeight: `calc(100vh - ${fullscreen || bottomBar ? "0px" : "56px"})`,
+      height: `calc(100% - ${fullscreen || bottomBar ? "0px" : "56px"})`,
       width: "100vw",
-      position: "fixed",
-      top: 0,
-      left: 0,
       sx: {
         backgroundColor: theme.palette.background.default,
         display: "flex",

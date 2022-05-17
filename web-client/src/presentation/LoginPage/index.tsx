@@ -13,7 +13,7 @@ const LoginPage: FC = () => {
       display="flex"
       fullscreen
       appBar={
-        <AppBar position="static" elevation={0} color="transparent">
+        <AppBar elevation={0} color="transparent">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {t`p.login.appbar`}
@@ -29,7 +29,7 @@ const LoginPage: FC = () => {
         flexWrap="nowrap"
         overflow="auto"
         sx={{
-          "& > :first-child": {
+          "& > :first-of-type": {
             mt: "auto",
           },
         }}

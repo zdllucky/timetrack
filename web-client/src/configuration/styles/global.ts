@@ -2,11 +2,14 @@ import { css } from "@emotion/react";
 
 export const globalStyle = css`
   html {
-    overscroll-behavior: none;
+    overscroll-behavior: auto !important;
+    overflow-scrolling: touch !important;
+    user-select: none;
+    scroll-behavior: smooth !important;
   }
-  body {
-    height: 100vh;
+  body,
+  #root {
     width: 100vw;
-    overflow: hidden;
+    height: 100vh;
   }
 `;
