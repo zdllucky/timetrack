@@ -15,8 +15,9 @@ const AppWithNavigation: FC = () => {
 
   return (
     <>
-      {TabsConfig.map(({ ctx, root }, index) => (
+      {TabsConfig.map(({ ctx, root, label }, index) => (
         <StackNavigator
+          key={label}
           root={root}
           ctx={() => ctx}
           hidden={currentTab !== index}

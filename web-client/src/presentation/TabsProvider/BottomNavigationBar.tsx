@@ -13,7 +13,7 @@ export const BottomNavigationBar: FC = () => {
       onChange={(event, newValue) => setTab(newValue)}
     >
       {TabsConfig.map(({ label, icon }) => (
-        <BottomNavigationAction label={label} icon={icon} />
+        <BottomNavigationAction label={label} icon={icon} key={label} />
       ))}
     </BottomNavigation>
   );

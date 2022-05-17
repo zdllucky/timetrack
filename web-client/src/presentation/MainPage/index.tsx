@@ -17,7 +17,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { useStackNavigator } from "../Router";
 import { BottomNavigationBar, useTabs } from "../TabsProvider";
 
-const Dashboard: FC = () => {
+const MainPage: FC = () => {
   const { theme, toggleMode } = useLocalTheme();
   const isAuthenticated: boolean = useIsAuthenticated();
   const { t, i18n } = useTranslation("translations");
@@ -61,10 +61,10 @@ const Dashboard: FC = () => {
         <Button variant={"outlined"} onClick={toggleMode}>
           {t(`theme.${theme.mode}`)}
         </Button>
-        <Button variant={"outlined"} onClick={() => push(<Dashboard />)}>
+        <Button variant={"outlined"} onClick={() => push(<MainPage />)}>
           Navigate
         </Button>
-        <Button variant={"outlined"} onClick={() => push(<Dashboard />, true)}>
+        <Button variant={"outlined"} onClick={() => push(<MainPage />, true)}>
           Navigate modal
         </Button>
         <Button variant={"outlined"} disabled={!canPop} onClick={pop}>
@@ -83,4 +83,4 @@ const Dashboard: FC = () => {
   );
 };
 
-export default Dashboard;
+export default MainPage;

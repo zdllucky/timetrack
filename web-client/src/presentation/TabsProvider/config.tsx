@@ -1,8 +1,8 @@
 import { Context, createContext, ReactNode } from "react";
 import { defaultContextData, StackNavigatorContextData } from "../Router";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import Dashboard from "../DashboardPage";
+import MainPage from "../MainPage";
+import ProfilePage from "../ProfilePage";
+import { Dashboard, Person } from "@mui/icons-material";
 
 export type TabConfig = {
   label: string;
@@ -14,14 +14,14 @@ export type TabConfig = {
 const TabsConfig: TabConfig[] = [
   {
     label: "Main",
-    icon: <RestoreIcon />,
-    root: <Dashboard />,
+    icon: <Dashboard />,
+    root: <MainPage />,
     ctx: createContext(defaultContextData),
   },
   {
     label: "Profile",
-    root: <Dashboard />,
-    icon: <FavoriteIcon />,
+    root: <ProfilePage />,
+    icon: <Person />,
     ctx: createContext(defaultContextData),
   },
 ];
