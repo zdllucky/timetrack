@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import { useTabs } from "../TabsProvider";
-import TabsConfig from "../TabsProvider/config";
+import { useTabs } from "./index";
+import TabsConfig from "./config";
 
-const BottomNavigationBar: FC = () => {
+export const BottomNavigationBar: FC = () => {
   const { currentTab, setTab } = useTabs();
 
   return (
@@ -18,5 +18,3 @@ const BottomNavigationBar: FC = () => {
     </BottomNavigation>
   );
 };
-
-export default BottomNavigationBar;

@@ -12,11 +12,10 @@ import { useIsAuthenticated } from "../../app/hooks/auth";
 import { useTranslation } from "react-i18next";
 import { useLocalTheme } from "../../app/hooks/theme";
 import Scaffold from "../Scaffold";
-import BottomNavigationBar from "../common/BottomNavigationBar";
 import DummyBlock from "../common/DummyBlock";
 import { ArrowBack } from "@mui/icons-material";
 import { useStackNavigator } from "../Router";
-import { useTabs } from "../TabsProvider";
+import { BottomNavigationBar, useTabs } from "../TabsProvider";
 
 const Dashboard: FC = () => {
   const { theme, toggleMode } = useLocalTheme();

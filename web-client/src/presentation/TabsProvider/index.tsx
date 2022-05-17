@@ -31,5 +31,7 @@ const TabsProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     </TabsContext.Provider>
   );
 };
+
+export * from "./BottomNavigationBar";
 export * from "./config";
 export default TabsProvider;
