@@ -61,10 +61,18 @@ const MainPage: FC = () => {
         <Button variant={"outlined"} onClick={toggleMode}>
           {t(`theme.${theme.mode}`)}
         </Button>
-        <Button variant={"outlined"} onClick={() => push(<MainPage />)}>
+        <Button
+          variant={"outlined"}
+          onClick={() =>
+            push(<MainPage />).then(() => console.log("Hello Japan!"))
+          }
+        >
           Navigate
         </Button>
-        <Button variant={"outlined"} onClick={() => push(<MainPage />, true)}>
+        <Button
+          variant={"outlined"}
+          onClick={() => push(<MainPage />, true).then((v) => console.log(v))}
+        >
           Navigate modal
         </Button>
         <Button variant={"outlined"} disabled={!canPop} onClick={pop}>

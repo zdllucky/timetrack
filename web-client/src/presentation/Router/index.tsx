@@ -12,6 +12,7 @@ export interface StackNavigatorContextData {
    * @param result The route's result (if any)
    */
   pop(result?: any): void;
+  popAll(): void;
   /**
    * Whether the route can reasonably call the `pop` function (i.e., if it's not at the bottom of
    * the stack)
@@ -26,6 +27,7 @@ export interface StackNavigatorContextData {
 export const defaultContextData: StackNavigatorContextData = {
   push: async () => {},
   pop() {},
+  popAll() {},
   canPop: false,
   isModal: false,
 };
