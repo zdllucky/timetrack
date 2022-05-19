@@ -16,9 +16,7 @@ export const BottomNavigationBar: FC = () => {
     >
       {TabsConfig.map(({ ctx, label, icon }, index) => (
         <BottomNavigationAction
-          onClick={() => {
-            if (currentTab === index) popAll();
-          }}
+          onClick={() => currentTab === index && popAll()}
           label={label}
           icon={icon}
           key={label}
