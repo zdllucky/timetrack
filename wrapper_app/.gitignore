@@ -10,6 +10,8 @@
 .svn/
 .fvm/*
 !*fvm_config.json
+**.g.dart
+**/injections.config.dart
 
 # IntelliJ related
 *.iml
