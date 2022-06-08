@@ -49,7 +49,10 @@ const checkForCircularAccesses = async (
       await Promise.all(
         accesses.map(({ name, contains }) =>
           checkForCircularAccesses(
-            accesses.filter(({ name }) => contains.includes(name), name)
+            accesses.filter(
+              ({ name }) => contains && contains.includes(name),
+              name
+            )
           )
         )
       );
@@ -58,7 +61,10 @@ const checkForCircularAccesses = async (
         accesses.map(
           async ({ contains }) =>
             await checkForCircularAccesses(
-              accesses.filter(({ name }) => contains.includes(name), tester)
+              accesses.filter(
+                ({ name }) => contains && contains.includes(name),
+                tester
+              )
             )
         )
       );
