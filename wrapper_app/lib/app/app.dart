@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../data/remote_host/models/remote_host.dart';
 import 'host/__.dart';
 import 'safe_constraints/__.dart';
 
@@ -75,55 +73,52 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ThemeData.dark().primaryColor,
-        body: HostScaffold(
-          child: BlocBuilder<HostCubit, RemoteHost>(
-            builder: (context, state) {
-              return SafeConstraintsProvider(
-                child: InAppWebView(
-                  key: webViewKey,
-                  initialUrlRequest: URLRequest(url: Uri.parse(state.uri)),
-                  initialOptions: options,
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
+      backgroundColor: ThemeData.dark().primaryColor,
+      body: HostScaffold(
+        builder: (context, state) {
+          return SafeConstraintsProvider(
+            child: InAppWebView(
+              key: webViewKey,
+              initialUrlRequest: URLRequest(url: Uri.parse(state.uri)),
+              initialOptions: options,
+              pullToRefreshController: pullToRefreshController,
+              onWebViewCreated: (controller) {
+                webViewController = controller;
+              },
+              androidOnPermissionRequest:
+                  (controller, origin, resources) async {
+                return PermissionRequestResponse(
+                    resources: resources,
+                    action: PermissionRequestResponseAction.GRANT);
+              },
+              shouldOverrideUrlLoading: (controller, navigationAction) async {
+                var uri = navigationAction.request.url!;
 
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      if (!await launchUrl(uri)) {
-                        return NavigationActionPolicy.CANCEL;
-                      }
-                    }
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadError: (controller, url, code, message) {
-                    pullToRefreshController.endRefreshing();
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    debugPrint(consoleMessage.toString());
-                  },
-                ),
-              );
-            },
-          ),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
-        );
+                if (![
+                  "http",
+                  "https",
+                  "file",
+                  "chrome",
+                  "data",
+                  "javascript",
+                  "about"
+                ].contains(uri.scheme)) {
+                  if (!await launchUrl(uri)) {
+                    return NavigationActionPolicy.CANCEL;
+                  }
+                }
+                return NavigationActionPolicy.ALLOW;
+              },
+              onLoadError: (controller, url, code, message) {
+                pullToRefreshController.endRefreshing();
+              },
+              onConsoleMessage: (controller, consoleMessage) {
+                debugPrint(consoleMessage.toString());
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 }

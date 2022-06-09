@@ -7,9 +7,9 @@ import '../__.dart';
 import '../widgets/form.dart';
 
 class HostScaffold extends StatelessWidget {
-  final Widget child;
+  final Widget Function(BuildContext, RemoteHost) builder;
 
-  const HostScaffold({Key? key, required this.child}) : super(key: key);
+  const HostScaffold({Key? key, required this.builder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class HostScaffold extends StatelessWidget {
         child: Scaffold(
             backgroundColor: ThemeData.dark().primaryColor,
             body: BlocBuilder<HostCubit, RemoteHost>(
-                builder: (_, state) => state.uri.isNotEmpty
-                    ? child
+                builder: (context, state) => state.uri.isNotEmpty
+                    ? builder(context, state)
                     : const SafeArea(
                         child: SetHostForm(),
                       ))));
