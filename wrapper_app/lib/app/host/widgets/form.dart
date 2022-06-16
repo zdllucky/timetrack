@@ -76,7 +76,7 @@ class _SetHostFormState extends State<SetHostForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 8, bottom: 16),
                 child: ElevatedButton(
                   style: const ButtonStyle(),
                   onPressed: disabledOnRequest || disabledOnInput

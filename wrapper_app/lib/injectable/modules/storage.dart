@@ -17,6 +17,5 @@ abstract class AppStorage {
   @preResolve
   @lazySingleton
   Future<Box<RemoteHost>> remoteHostStorage(HiveInterface storage) async =>
-      await storage.openBox<RemoteHost>("remote_host")
-        ..clear();
+      await storage.openBox<RemoteHost>("remote_host");
 }

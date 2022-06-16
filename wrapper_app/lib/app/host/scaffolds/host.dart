@@ -7,7 +7,7 @@ import '../__.dart';
 import '../widgets/form.dart';
 
 class HostScaffold extends StatelessWidget {
-  final Widget Function(BuildContext, RemoteHost) builder;
+  final Widget Function(BuildContext context, RemoteHost state) builder;
 
   const HostScaffold({Key? key, required this.builder}) : super(key: key);
 
@@ -16,7 +16,6 @@ class HostScaffold extends StatelessWidget {
     return BlocProvider<HostCubit>(
         create: (_) => get<HostCubit>(),
         child: Scaffold(
-            backgroundColor: ThemeData.dark().primaryColor,
             body: BlocBuilder<HostCubit, RemoteHost>(
                 builder: (context, state) => state.uri.isNotEmpty
                     ? builder(context, state)
