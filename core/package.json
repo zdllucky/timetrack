@@ -14,13 +14,13 @@
     "dotenv": "^16.0.0",
     "jest": "^27.5.1",
     "ts-jest": "^27.1.4",
-    "@graphql-codegen/cli": "2.6.2ls",
-    "@graphql-codegen/typescript": "2.4.8",
-    "@graphql-codegen/introspection": "2.1.1"
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/introspection": "^2.1.1"
   },
   "dependencies": {
     "@keystone-6/auth": "^2.0.0",
-    "@keystone-6/core": "^1.1.0",
+    "@keystone-6/core": "^1.1.1",
     "@keystone-6/session-store-redis": "^2.0.0",
     "redis": "^3.1.2"
   },
@@ -32,6 +32,7 @@
     "dev": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev",
     "dev:clear": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone dev --reset-db",
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
+    "postinstall_fix": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone postinstall",
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status",
     "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000",
     "generate_schema": "graphql-codegen --config codegen.json --watch"
