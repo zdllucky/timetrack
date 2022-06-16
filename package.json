@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "concurrently \"yarn --cwd core install\"",
+    "postinstall": "concurrently \"npm --cwd core install\" \"npm --cwd web-client install\"",
     "dev:core": "yarn --cwd core dev",
     "prepare": "husky install"
   },
