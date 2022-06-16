@@ -2,14 +2,7 @@ import { FC, PropsWithChildren, ReactNode, useMemo } from "react";
 import { Box, Paper, useTheme } from "@mui/material";
 import { BoxProps } from "@mui/material/Box/Box";
 import { merge } from "lodash";
-
-// const StyledBox = styled(Box)<BoxProps>`
-//   height: calc(100dvh - ${({ reduction }) => reduction});
-//   height: calc(100vh - ${({ reduction }) => reduction});
-//   background-color: ${(color) => color};
-//   display: flex;
-//   flex-direction: column;
-// `;
+import { useLocalTheme } from "../../app/hooks/theme";
 
 const Scaffold: FC<
   PropsWithChildren<
@@ -27,18 +20,22 @@ const Scaffold: FC<
   ...boxProps
 }) => {
   const theme = useTheme();
+  const {
+    theme: { area },
+  } = useLocalTheme();
 
   const defaultScaffoldBoxProps: Partial<BoxProps> = useMemo(
     () => ({
-      height: `calc(100vh - ${
+      height: `calc(100dvh - ${
         fullscreen || bottomBar ? "0px" : theme.spacing(7)
-      })`,
+      } - ${(!(fullscreen || bottomBar) && area?.offsetBottom) || 0}px)`,
       boxShadow:
         (!fullscreen &&
           !bottomBar &&
           "inset 0px 1px 10px 0px rgb(0 0 0 / 12%)") ||
         "none",
       width: "100vw",
+      overflow: "hidden",
       sx: {
         backgroundColor: theme.palette.background.default,
         display: "flex",

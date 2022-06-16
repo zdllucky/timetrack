@@ -28,7 +28,13 @@ const MainPage: FC = () => {
     <Scaffold
       bottomBar={canPop ? undefined : <BottomNavigationBar />}
       appBar={
-        <AppBar variant="elevation" position="static">
+        <AppBar
+          variant="elevation"
+          position="static"
+          sx={{
+            pt: `${theme.area?.offsetTop}px`,
+          }}
+        >
           <Toolbar>
             {canPop && (
               <IconButton

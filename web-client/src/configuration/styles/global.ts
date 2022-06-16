@@ -5,7 +5,7 @@ export const globalStyle = css`
     overscroll-behavior: auto !important;
     overflow-scrolling: touch !important;
     user-select: none;
-    scroll-behavior: smooth !important;
+    //scroll-behavior: ;
   }
   body,
   #root {

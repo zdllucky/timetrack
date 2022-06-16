@@ -9,6 +9,8 @@ import { FC } from "react";
 import { store } from "../app/store";
 import { Provider as StoreProvider } from "react-redux";
 import TabsConfig from "./TabsProvider/config";
+import { useLocalTheme } from "../app/hooks/theme";
+import { css, Global } from "@emotion/react";
 
 const AppWithNavigation: FC = () => {
   const { currentTab } = useTabs();
@@ -29,13 +31,25 @@ const AppWithNavigation: FC = () => {
 
 const AppWithTabs: FC = () => {
   const isAuthenticated = useIsAuthenticated();
+  const { theme } = useLocalTheme();
 
   return (
-    <StyleProvider>
+    <>
+      <Global
+        styles={css`
+          .snackbar-container-override {
+            margin-top: ${theme.area?.offsetTop || 0}px !important;
+          }
+        `}
+      />
       <SnackbarProvider
+        preventDuplicate
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
+        }}
+        classes={{
+          containerAnchorOriginTopCenter: "snackbar-container-override",
         }}
       >
         {isAuthenticated ? (
@@ -46,13 +60,19 @@ const AppWithTabs: FC = () => {
           <LoginPage />
         )}
       </SnackbarProvider>
-    </StyleProvider>
+    </>
   );
 };
 
+const AppWithStyles: FC = () => (
+  <StyleProvider>
+    <AppWithTabs />
+  </StyleProvider>
+);
+
 const AppWithStore: FC = () => (
   <StoreProvider store={store}>
-    <AppWithTabs />
+    <AppWithStyles />
   </StoreProvider>
 );
 
