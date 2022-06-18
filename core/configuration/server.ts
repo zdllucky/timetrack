@@ -10,9 +10,12 @@ const server: ServerConfig<BaseKeystoneTypeInfo> = {
   healthCheck: {
     path: "/health",
     data: () => ({
-      status: "Ok!",
+      status: "up",
       timestamp: Date.now(),
       uptime: process.uptime(),
+      client: {
+        version: "^0.1.0",
+      },
     }),
   },
 };
