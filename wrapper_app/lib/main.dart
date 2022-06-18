@@ -9,6 +9,7 @@ import 'injectable/injections.dart';
 
 void main() async {
   await configureDependencies();
+  WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);

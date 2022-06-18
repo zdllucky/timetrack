@@ -19,9 +19,7 @@ class App extends StatelessWidget {
       ],
       supportedLocales: const [Locale('en')],
       // theme: ThemeData.dark(),
-      home: HostScaffold(
-          builder: (context, state) =>
-              Webview(uri: state.uri, options: webViewOptions)),
+      home: HostScaffold(child: Webview()),
     );
   }
 }
