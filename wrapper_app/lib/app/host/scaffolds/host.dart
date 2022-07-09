@@ -25,8 +25,13 @@ class HostScaffold extends StatelessWidget {
               BlocBuilder<HostAvailabilityCubit, HostAvailabilityState>(
                   builder: (context, hostAvailabilityState) => Stack(children: [
                         if (hostAvailabilityState is! HostLoaded)
-                          const Scaffold(
-                            body: SafeArea(
+                          Scaffold(
+                            appBar: AppBar(
+                              title: const Text(
+                                "Connect to server",
+                              ),
+                            ),
+                            body: const SafeArea(
                               child: SetHostForm(),
                             ),
                           ),

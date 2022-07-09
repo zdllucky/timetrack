@@ -1,15 +1,18 @@
 import { css } from "@emotion/react";
 
-export const globalStyle = css`
+const globalStyle = css`
   html {
-    overscroll-behavior: auto !important;
+    overscroll-behavior: none !important;
     overflow-scrolling: touch !important;
     user-select: none;
     //scroll-behavior: ;
   }
   body,
   #root {
+    position: fixed;
     width: 100vw;
     height: 100vh;
   }
 `;
+
+export default globalStyle;

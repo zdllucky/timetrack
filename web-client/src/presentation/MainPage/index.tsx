@@ -7,6 +7,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useIsAuthenticated } from "../../app/hooks/auth";
 import { useTranslation } from "react-i18next";
@@ -18,7 +19,11 @@ import { useStackNavigator } from "../Router";
 import { BottomNavigationBar, useTabs } from "../TabsProvider";
 
 const MainPage: FC = () => {
-  const { theme, toggleMode } = useLocalTheme();
+  const {
+    theme: { area, mode },
+    toggleMode,
+  } = useLocalTheme();
+  const theme = useTheme();
   const isAuthenticated: boolean = useIsAuthenticated();
   const { t, i18n } = useTranslation("translations");
   const { pop, push, canPop } = useStackNavigator();
@@ -29,10 +34,11 @@ const MainPage: FC = () => {
       bottomBar={canPop ? undefined : <BottomNavigationBar />}
       appBar={
         <AppBar
-          variant="elevation"
           position="static"
           sx={{
-            pt: `${theme.area?.offsetTop}px`,
+            pt: `${area?.offsetTop}px`,
+            // backgroundColor: theme.palette.background.paper,
+            // color: theme.palette.text.primary,
           }}
         >
           <Toolbar>
@@ -65,7 +71,7 @@ const MainPage: FC = () => {
           {t`locale.button`}
         </Button>
         <Button variant={"outlined"} onClick={toggleMode}>
-          {t(`theme.${theme.mode}`)}
+          {t(`theme.${mode}`)}
         </Button>
         <Button
           variant={"outlined"}

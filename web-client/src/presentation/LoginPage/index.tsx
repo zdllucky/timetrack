@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AuthForm from "./blocks/AuthForm";
 import Scaffold from "../Scaffold";
@@ -10,6 +10,7 @@ const LoginPage: FC = () => {
   const {
     theme: { area },
   } = useLocalTheme();
+  const theme = useTheme();
 
   return (
     <Scaffold
@@ -21,8 +22,6 @@ const LoginPage: FC = () => {
       }}
       appBar={
         <AppBar
-          elevation={0}
-          color="transparent"
           sx={{
             pt: `${area?.offsetTop}px`,
           }}

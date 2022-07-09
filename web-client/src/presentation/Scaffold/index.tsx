@@ -26,7 +26,7 @@ const Scaffold: FC<
 
   const defaultScaffoldBoxProps: Partial<BoxProps> = useMemo(
     () => ({
-      height: `calc(100dvh - ${
+      height: `calc(100vh - ${
         fullscreen || bottomBar ? "0px" : theme.spacing(7)
       } - ${(!(fullscreen || bottomBar) && area?.offsetBottom) || 0}px)`,
       boxShadow:

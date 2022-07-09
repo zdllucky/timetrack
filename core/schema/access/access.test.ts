@@ -3,7 +3,6 @@
 import { KeystoneContext } from "@keystone-6/core/types";
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import config from "../../keystone";
-import { redisClient } from "../../configuration";
 import { accesses } from "../index";
 import { SystemAccess } from "./_misc/types";
 
@@ -27,7 +26,6 @@ describe("Accesses schema", () => {
 
   afterAll(async () => {
     await testEnv.disconnect();
-    await redisClient.quit();
   });
 
   it("inserts to database", async () => {

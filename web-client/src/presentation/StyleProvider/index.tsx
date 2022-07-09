@@ -1,31 +1,19 @@
 import { useLocalTheme } from "../../app/hooks/theme";
-import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
-import {
-  createTheme,
-  CssBaseline,
-  GlobalStyles,
-  ThemeProvider,
-} from "@mui/material";
-import { globalStyle } from "../../configuration/styles/global";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
+import globalStyle from "./globalStyle";
 import { useDispatch } from "react-redux";
 import { SafeArea, setArea } from "../../app/slices/theme";
 import { flutterCall } from "./types";
 import { css, Global } from "@emotion/react";
 import { disableScrolling, enableScrolling } from "../../helpers";
+import useCreateAppTheme from "./createAppTheme";
 
 const StyleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
     theme: { mode },
   } = useLocalTheme();
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
+  const theme = useCreateAppTheme(mode);
   const dispatch = useDispatch();
   const [height, setHeight] = useState<number>(window.visualViewport.height);
 
