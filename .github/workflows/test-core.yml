@@ -26,7 +26,7 @@ jobs:
         ports:
           - "5432:5432"
         options:
-          --env-file .envs/test
+          --env-file deploy/.envs/test
 
     steps:
 #      - name: Install git-secret
