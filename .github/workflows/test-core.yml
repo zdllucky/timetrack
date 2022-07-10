@@ -9,7 +9,7 @@ on:
       - core/**
 
 jobs:
-  test:
+  core_tests:
     name: Core testing
     runs-on: ubuntu-latest
     strategy:
@@ -41,8 +41,6 @@ jobs:
 
       - name: Checkout under $GITHUB_WORKSPACE
         uses: actions/checkout@v3
-        run: |
-          cd core
 
 #      - name: Configure GPG Key
 #        uses: crazy-max/ghaction-import-gpg@v3
@@ -61,8 +59,11 @@ jobs:
 #          cat envs/.env.production >> $GITHUB_ENV
 
       - uses: ./.github/actions/ci-setup
+        with:
+          path: core
 
       - name: Running tests
+        working-directory: core
         run: env $(grep -v '^#' ../deploy/.envs/test | xargs -0) yarn jest --runInBand --testTimeout=60000
         env:
           CI_NODE_TOTAL: 4

@@ -1,5 +1,12 @@
 name: 'CI setup'
 description: 'Configures environment for testing.'
+
+inputs:
+  path:
+    default: /
+    description: Module path
+    required: true
+
 runs:
   using: 'composite'
   steps:
@@ -22,7 +29,9 @@ runs:
         key: ${{ runner.os }}-core-npm-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-core-npm-
+
     - name: Install Dependencies
+      working-directory: ${{ inputs.path }}
       run: | 
         npm ci
       shell: bash
