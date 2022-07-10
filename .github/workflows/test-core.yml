@@ -70,9 +70,13 @@ jobs:
         with:
           path: core
 
+      - name: Generating schema types
+        run: |
+          npx graphql-codegen --config codegen.json
+
       - name: Running tests
         working-directory: core
-        run: env $(grep -v '^#' ../deploy/.envs/test | xargs -0) yarn jest --runInBand --testTimeout=60000
+        run: env $(grep -v '^#' ../deploy/.envs/test | xargs -0) npx jest --runInBand --testTimeout=60000
         env:
           CI_NODE_TOTAL: 2
           CI_NODE_INDEX: ${{ matrix.index }}
