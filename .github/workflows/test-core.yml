@@ -1,0 +1,83 @@
+name: Core testing
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - core/**
+
+jobs:
+  core_tests:
+    name: Core testing
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [ 0, 1 ]
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+          - "6379:6379"
+      db:
+        image: postgres:alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_PASSWORD: test123123
+          POSTGRES_USER: dbadmin
+          POSTGRES_DB: timetrack
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+
+    steps:
+#      - name: Install git-secret
+#        env:
+#          SECRETS_VERBOSE: 1
+#          PREFIX: "/usr/local"
+#        run: |
+#          git clone https://github.com/sobolevn/git-secret.git git-secret
+#          cd git-secret
+#          sudo make build
+#          sudo make install
+
+      - name: Checkout under $GITHUB_WORKSPACE
+        uses: actions/checkout@v3
+
+#      - name: Configure GPG Key
+#        uses: crazy-max/ghaction-import-gpg@v3
+#        with:
+#          gpg-private-key: ${{ secrets.WOOP_GAME_GPG_KEY }}
+#          passphrase: ${{ secrets.WOOP_GAME_GPG_PWD }}
+#          git-user-signingkey: true
+#          git-commit-gpgsign: true
+#
+#      - name: Reveal secrets
+#        env:
+#          SECRET_PWD: ${{ secrets.WOOP_GAME_GPG_PWD }}
+#          SECRETS_VERBOSE: 1
+#        run: |
+#          git secret reveal -p $(echo $SECRET_PWD)
+#          cat envs/.env.production >> $GITHUB_ENV
+
+      - uses: ./.github/actions/ci-setup
+        with:
+          path: core
+
+      - name: Generating schema types
+        working-directory: core
+        run: |
+          npx graphql-codegen --config codegen.json
+
+      - name: Running tests
+        working-directory: core
+        run: env $(grep -v '^#' ../deploy/.envs/test | xargs -0) npx jest --runInBand --passWithNoTests --testTimeout=60000
+        env:
+          CI_NODE_TOTAL: 2
+          CI_NODE_INDEX: ${{ matrix.index }}

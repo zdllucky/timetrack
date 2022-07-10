@@ -15,6 +15,8 @@
     "graphql": "^15.8.0"
   },
   "devDependencies": {
+    "@jest/test-result": "^28.1.1",
+    "@jest/test-sequencer": "^28.1.1",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/typescript": "^2.4.8",
@@ -33,5 +35,10 @@
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status",
     "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000",
     "generate_schema": "graphql-codegen --config codegen.json --watch"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testSequencer": "./jest/sequencer.js"
   }
 }
