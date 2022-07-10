@@ -71,6 +71,7 @@ jobs:
           path: core
 
       - name: Generating schema types
+        working-directory: core
         run: |
           npx graphql-codegen --config codegen.json
 

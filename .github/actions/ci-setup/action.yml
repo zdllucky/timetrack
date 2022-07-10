@@ -3,7 +3,7 @@ description: 'Configures environment for testing.'
 
 inputs:
   path:
-    default: /
+    default: .
     description: Module path
     required: true
 
@@ -17,18 +17,18 @@ runs:
 
     - name: Get npm cache directory path
       id: npm-cache-dir-path
-      run: echo "::set-output name=dir::$(npm get cache)"
+      run: echo "::set-output name=dir::$(npm config get cache)"
       shell: bash
 
     - uses: actions/cache@v3
       id: npm-cache
       with:
         path: |
-          ${{ steps.npm-cache-dir-path.outputs.dir }}
-          node_modules
-        key: ${{ runner.os }}-core-npm-${{ hashFiles('package-lock.json') }}
+          ${{ inputs.path }}/${{ steps.npm-cache-dir-path.outputs.dir }}
+          ${{ inputs.path }}/node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/${{ inputs.path }}/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-core-npm-
+          ${{ runner.os }}-npm-
 
     - name: Install Dependencies
       working-directory: ${{ inputs.path }}
