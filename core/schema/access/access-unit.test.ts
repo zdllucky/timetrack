@@ -1,8 +1,5 @@
 // const runner = setupTestRunner({ config });
 
-import { KeystoneContext } from "@keystone-6/core/types";
-import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
-import config from "../../keystone";
 import { accesses } from "../index";
 import { SystemAccess } from "./_misc/types";
 
@@ -10,28 +7,6 @@ describe("Accesses logic", () => {
   it("is not circular", async () => {
     expect.assertions(1);
     await expect(checkForCircularAccesses(accesses)).resolves.not.toThrow();
-  });
-});
-
-describe("Accesses schema", () => {
-  let testEnv: TestEnv;
-  let context: KeystoneContext;
-
-  beforeAll(async () => {
-    testEnv = await setupTestEnv({ config });
-    context = testEnv.testArgs.context;
-
-    await testEnv.connect();
-  });
-
-  afterAll(async () => {
-    await testEnv.disconnect();
-  });
-
-  it("inserts to database", async () => {
-    const res = await context.sudo().query.Access.count();
-
-    expect(Number(res)).toBe(accesses.length);
   });
 });
 
