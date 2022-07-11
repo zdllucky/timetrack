@@ -31,7 +31,7 @@ jobs:
         working-directory: core
         run: |
           env $(grep -v '^#' ../deploy/.envs/test | xargs -0) \
-          npx jest --runInBand --passWithNoTests --testMatch --testTimeout=60000 **/*.unit.test.ts
+          npx jest --runInBand --passWithNoTests --testTimeout=60000 **/*.unit.test.ts
         env:
           CI_NODE_TOTAL: 2
           CI_NODE_INDEX: ${{ matrix.index }}
