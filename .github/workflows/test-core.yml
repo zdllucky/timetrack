@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        index: [ 0, 1 ]
+        index: [ 0 ]
 
     steps:
       - name: Checkout under $GITHUB_WORKSPACE
@@ -33,7 +33,7 @@ jobs:
           env $(grep -v '^#' ../deploy/.envs/test | xargs -0) \
           npx jest --runInBand --passWithNoTests --testTimeout=60000 **/*.unit.test.ts
         env:
-          CI_NODE_TOTAL: 2
+          CI_NODE_TOTAL: 1
           CI_NODE_INDEX: ${{ matrix.index }}
 
   core_api_testing:
@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        index: [ 0, 1 ]
+        index: [ 0 ]
 
     services:
       redis:
@@ -79,5 +79,5 @@ jobs:
           env $(grep -v '^#' ../deploy/.envs/test | xargs -0) \
           npx jest --runInBand --passWithNoTests --testTimeout=60000  **/*.api.test.ts
         env:
-          CI_NODE_TOTAL: 2
+          CI_NODE_TOTAL: 1
           CI_NODE_INDEX: ${{ matrix.index }}
