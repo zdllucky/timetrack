@@ -6,6 +6,9 @@ inputs:
     default: .
     description: Module path
     required: true
+  run:
+    required: false
+    description: Addition run opts
 
 runs:
   using: 'composite'
@@ -35,3 +38,9 @@ runs:
       run: | 
         npm ci
       shell: bash
+
+    - name: Running additional scripts
+      working-directory: ${{ inputs.path }}
+      if: ${{ inputs.run }}
+      shell: bash
+      run: ${{ inputs.run }}
