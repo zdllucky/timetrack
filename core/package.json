@@ -39,6 +39,7 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "testPathIgnorePatterns": ["node_modules"],
     "testSequencer": "./jest/sequencer.js"
   }
 }

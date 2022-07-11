@@ -31,7 +31,11 @@ jobs:
         working-directory: core
         run: |
           env $(grep -v '^#' ../deploy/.envs/test | xargs -0) \
-          npx jest --runInBand --passWithNoTests --testTimeout=60000 **/*.unit.test.ts
+          npx jest \
+            --runInBand \
+            --passWithNoTests \
+            --testTimeout=60000 \
+            --testRegex .unit.test.ts$
         env:
           CI_NODE_TOTAL: 1
           CI_NODE_INDEX: ${{ matrix.index }}
@@ -77,7 +81,11 @@ jobs:
         working-directory: core
         run: |
           env $(grep -v '^#' ../deploy/.envs/test | xargs -0) \
-          npx jest --runInBand --passWithNoTests --testTimeout=60000  **/*.api.test.ts
+          npx jest \
+            --runInBand \
+            --passWithNoTests \
+            --testTimeout=60000 \
+            --testRegex .api.test.ts$
         env:
           CI_NODE_TOTAL: 1
           CI_NODE_INDEX: ${{ matrix.index }}
