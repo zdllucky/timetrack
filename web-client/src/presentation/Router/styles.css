@@ -4,8 +4,18 @@
     left: 0;
     pointer-events: none;
 
-    box-shadow: 0 0 20px rgba(0,0,0,.3);
+    /*overflow-y: hidden;*/
 }
+
+/*.rsn-route:before {*/
+/*    top: 0;*/
+/*    bottom: 0;*/
+/*    width: 20px;*/
+/*    position: absolute;*/
+/*    margin-left: -20px;*/
+/*    content: '';*/
+/*    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2));*/
+/*}*/
 
 .rsn-route * {
     pointer-events: all;

@@ -1,26 +1,26 @@
 import { ReactNode } from "react";
 
+// TODO: "replace" parameter to push, will be implemented as number: amount of routes to pop before
+// TODO: Named routes with dynamic linking
+// TODO: Swipe-able pop method
+// TODO: Add 'popSome' method
+// TODO: Add shadow
+// TODO: Blocked pop method for route
+// TODO: 'render' prop to unload scaffold render after pushing route
+
+export type StackNavigatorPushOptions = {
+  replace?: number;
+};
+
 export interface StackNavigatorContextData {
-  /**
-   * Push a route to the stack and returns its result (if any)
-   * @param child The route's element
-   * @param isModal
-   */
-  push(child: ReactNode, isModal?: boolean): Promise<any>;
-  /**
-   * Pop the route at the top of the stack, optionally returning a result
-   * @param result The route's result (if any)
-   */
+  push(
+    child: ReactNode | string,
+    isModal?: boolean,
+    options?: StackNavigatorPushOptions
+  ): Promise<any>;
   pop(result?: any): void;
   popAll(): void;
-  /**
-   * Whether the route can reasonably call the `pop` function (i.e., if it's not at the bottom of
-   * the stack)
-   */
   canPop: boolean;
-  /**
-   * Whether the route is modal
-   */
   isModal: boolean;
 }
 

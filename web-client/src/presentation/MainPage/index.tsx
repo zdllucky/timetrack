@@ -37,8 +37,6 @@ const MainPage: FC = () => {
           position="static"
           sx={{
             pt: `${area?.offsetTop}px`,
-            // backgroundColor: theme.palette.background.paper,
-            // color: theme.palette.text.primary,
           }}
         >
           <Toolbar>

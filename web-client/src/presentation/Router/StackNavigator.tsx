@@ -9,13 +9,14 @@ import React, {
 import { createPortal } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./styles.css";
-import { StackNavigatorContextData } from "./";
+import { StackNavigatorContextData, StackNavigatorPushOptions } from "./";
 import { useSwipeable } from "react-swipeable";
 
 interface StackEntry {
   child: ReactNode;
   resolve: (result: any) => void;
   isModal: boolean;
+  options: StackNavigatorPushOptions;
 }
 
 export interface StackNavigatorProps {
@@ -77,15 +78,23 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
   );
 
   const pushRoute = useCallback(
-    (route: StackEntry) => {
-      setStack((stack) => [...stack, route]);
-    },
+    (route: StackEntry) =>
+      setStack((stack) => [
+        ...(route.options.replace
+          ? stack.slice(0, -route.options.replace)
+          : stack),
+        route,
+      ]),
     [setStack]
   );
 
-  const push = (child: ReactNode, isModal: boolean = false) => {
+  const push = (
+    child: ReactNode,
+    isModal: boolean = false,
+    options: StackNavigatorPushOptions = { replace: 0 }
+  ) => {
     return new Promise<any>((resolve) =>
-      pushRoute({ child, resolve, isModal })
+      pushRoute({ child, resolve, isModal, options })
     );
   };
 
