@@ -111,7 +111,7 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
           {stack.map((route, i) => (
             <CSSTransition
               key={`stack-route-${i}`}
-              timeout={300}
+              timeout={500}
               classNames={route.isModal ? "rsn-modal-route" : "rsn-route"}
             >
               <Context.Provider
