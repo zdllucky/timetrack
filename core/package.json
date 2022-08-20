@@ -36,6 +36,9 @@
     "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000",
     "generate_schema": "graphql-codegen --config codegen.json --watch"
   },
+  "engines": {
+    "node": "^16.16"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
