@@ -7,7 +7,6 @@ import {
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useIsAuthenticated } from "../../app/hooks/auth";
 import { useTranslation } from "react-i18next";
@@ -23,7 +22,6 @@ const MainPage: FC = () => {
     theme: { area, mode },
     toggleMode,
   } = useLocalTheme();
-  const theme = useTheme();
   const isAuthenticated: boolean = useIsAuthenticated();
   const { t, i18n } = useTranslation("translations");
   const { pop, push, canPop } = useStackNavigator();
@@ -59,7 +57,7 @@ const MainPage: FC = () => {
         </AppBar>
       }
     >
-      <Stack sx={{ p: 2 }} direction="row" spacing={1}>
+      <Stack sx={{ p: 2 }} direction="row" gap={1} flexWrap={"wrap"}>
         <Button
           variant={"outlined"}
           onClick={() =>
@@ -79,9 +77,22 @@ const MainPage: FC = () => {
         >
           Navigate
         </Button>
+
         <Button
           variant={"outlined"}
-          onClick={() => push(<MainPage />, true).then((v) => console.log(v))}
+          onClick={() =>
+            push(<MainPage />, {
+              replace: 2,
+            }).then(() => console.log("Hello Japan!"))
+          }
+        >
+          Navigate with replace -2
+        </Button>
+        <Button
+          variant={"outlined"}
+          onClick={() =>
+            push(<MainPage />, { isModal: true }).then((v) => console.log(v))
+          }
         >
           Navigate modal
         </Button>

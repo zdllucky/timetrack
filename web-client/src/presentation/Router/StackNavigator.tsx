@@ -11,11 +11,12 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./styles.css";
 import { StackNavigatorContextData, StackNavigatorPushOptions } from "./";
 import { useSwipeable } from "react-swipeable";
+import { nanoid } from "nanoid";
 
 interface StackEntry {
   child: ReactNode;
+  id: string;
   resolve: (result: any) => void;
-  isModal: boolean;
   options: StackNavigatorPushOptions;
 }
 
@@ -71,32 +72,28 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
         if (all) return [];
 
         currentRoute.resolve(result);
-        return stack.slice(0, stack.length - 1);
+        return stack.slice(0, -1);
       });
     },
     [setStack, stack]
   );
 
   const pushRoute = useCallback(
-    (route: StackEntry) =>
+    (route: StackEntry) => {
       setStack((stack) => [
         ...(route.options.replace
-          ? stack.slice(0, -route.options.replace)
+          ? stack.slice(0, -route.options.replace!)
           : stack),
         route,
-      ]),
+      ]);
+    },
     [setStack]
   );
 
-  const push = (
-    child: ReactNode,
-    isModal: boolean = false,
-    options: StackNavigatorPushOptions = { replace: 0 }
-  ) => {
-    return new Promise<any>((resolve) =>
-      pushRoute({ child, resolve, isModal, options })
+  const push = (child: ReactNode, options: StackNavigatorPushOptions = {}) =>
+    new Promise<any>((resolve) =>
+      pushRoute({ child, resolve, options, id: nanoid(6) })
     );
-  };
 
   const pop = (result?: any) => popRoute(result);
 
@@ -119,9 +116,11 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
         <TransitionGroup hidden={hidden}>
           {stack.map((route, i) => (
             <CSSTransition
-              key={`stack-route-${i}`}
-              timeout={500}
-              classNames={route.isModal ? "rsn-modal-route" : "rsn-route"}
+              key={`stack-route-${route.id}`}
+              timeout={350}
+              classNames={
+                route.options.isModal ? "rsn-modal-route" : "rsn-route"
+              }
             >
               <Context.Provider
                 value={{
@@ -129,7 +128,7 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
                   pop,
                   popAll,
                   canPop: true,
-                  isModal: route.isModal,
+                  isModal: !!route.options.isModal,
                 }}
               >
                 <StackScaffold index={i} callback={pop}>

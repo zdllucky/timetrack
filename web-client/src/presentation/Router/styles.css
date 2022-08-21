@@ -37,7 +37,7 @@
 
     /*opacity: 1;*/
     transform: translateX(0);
-    transition: transform 500ms cubic-bezier(0, 0, 0.2, 1);
+    transition: transform 350ms cubic-bezier(0, 0, 0.2, 1);
 }
 .rsn-route-exit {
     /*opacity: 1;*/
@@ -47,7 +47,7 @@
     /*opacity: 0;*/
 
     transform: translateX(100vw);
-    transition: transform 500ms cubic-bezier(0, 0, 0.2, 1);
+    transition: transform 350ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .rsn-modal-route-enter {

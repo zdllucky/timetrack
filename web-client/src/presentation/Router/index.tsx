@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 
-// TODO: "replace" parameter to push, will be implemented as number: amount of routes to pop before
 // TODO: Named routes with dynamic linking
 // TODO: Swipe-able pop method
 // TODO: Add 'popSome' method
@@ -10,12 +9,12 @@ import { ReactNode } from "react";
 
 export type StackNavigatorPushOptions = {
   replace?: number;
+  isModal?: boolean;
 };
 
 export interface StackNavigatorContextData {
   push(
     child: ReactNode | string,
-    isModal?: boolean,
     options?: StackNavigatorPushOptions
   ): Promise<any>;
   pop(result?: any): void;
