@@ -1,27 +1,13 @@
-import { ReactNode } from "react";
+import { NamedRoute, StackNavigatorContextData } from "./types";
+import { DeepReadonly } from "../../helpers";
 
-// TODO: Named routes with dynamic linking
-// TODO: Swipe-able pop method
 // TODO: Add 'popSome' method
-// TODO: Add shadow
-// TODO: Blocked pop method for route
+// TODO: Blocked system pop for route
 // TODO: 'render' prop to unload scaffold render after pushing route
-
-export type StackNavigatorPushOptions = {
-  replace?: number;
-  isModal?: boolean;
-};
-
-export interface StackNavigatorContextData {
-  push(
-    child: ReactNode | string,
-    options?: StackNavigatorPushOptions
-  ): Promise<any>;
-  pop(result?: any): void;
-  popAll(): void;
-  canPop: boolean;
-  isModal: boolean;
-}
+// WISH: Provide support for pressing back button (Android)
+// WISH: Add shadow
+// WISH: Swipe-able pop method
+// WISH: Adjust animation
 
 export const defaultContextData: StackNavigatorContextData = {
   push: async () => {},
@@ -31,5 +17,20 @@ export const defaultContextData: StackNavigatorContextData = {
   isModal: false,
 };
 
+const _routes: Record<string, NamedRoute> = {};
+
+export const getRoutes = () => _routes as DeepReadonly<typeof _routes>;
+export const getRoute = (name: string) =>
+  _routes[name] as DeepReadonly<NamedRoute>;
+
+export const createNamedRoute = (
+  name: string,
+  component: NamedRoute["component"]
+) =>
+  (_routes[name] = {
+    component,
+  });
+
+export * from "./types";
 export * from "./StackNavigator";
 export * from "./useStackNavigator";

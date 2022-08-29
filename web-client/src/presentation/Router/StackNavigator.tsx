@@ -1,5 +1,4 @@
 import React, {
-  Context,
   FC,
   PropsWithChildren,
   ReactNode,
@@ -9,25 +8,15 @@ import React, {
 import { createPortal } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./styles.css";
-import { StackNavigatorContextData, StackNavigatorPushOptions } from "./";
+import {
+  getRoute,
+  PushRoute,
+  StackEntry,
+  StackNavigatorProps,
+  StackNavigatorPushOptions,
+} from "./";
 import { useSwipeable } from "react-swipeable";
 import { nanoid } from "nanoid";
-
-interface StackEntry {
-  child: ReactNode;
-  id: string;
-  resolve: (result: any) => void;
-  options: StackNavigatorPushOptions;
-}
-
-export interface StackNavigatorProps {
-  /**
-   * The route at the bottom of the stack
-   */
-  root?: ReactNode;
-  ctx: () => Context<StackNavigatorContextData>;
-  hidden: boolean;
-}
 
 const swipeConfig = {
   delta: Math.min(window.innerWidth * 0.7, 150), // min distance(px) before a swipe starts. *See Notes*
@@ -40,12 +29,10 @@ const swipeConfig = {
 };
 
 const StackScaffold: FC<
-  PropsWithChildren<{ index: number; callback: () => void }>
+  PropsWithChildren<{ index: number; callback: () => void; routeProps?: any }>
 > = ({ children, index, callback }) => {
   const handlers = useSwipeable({
-    onSwipedRight: (eventData) => {
-      if (eventData.initial[0] <= 82) callback();
-    },
+    onSwipedRight: (eventData) => eventData.initial[0] <= 82 && callback(),
     ...swipeConfig,
   });
 
@@ -90,9 +77,20 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
     [setStack]
   );
 
-  const push = (child: ReactNode, options: StackNavigatorPushOptions = {}) =>
+  const push: PushRoute<ReactNode | string> = (child, options = {}) =>
     new Promise<any>((resolve) =>
-      pushRoute({ child, resolve, options, id: nanoid(6) })
+      pushRoute({
+        child:
+          typeof child === "string"
+            ? getRoute(child).component(
+                (options as StackNavigatorPushOptions).props
+              )
+            : child,
+        resolve,
+        name: typeof child === "string" ? child : undefined,
+        options,
+        id: nanoid(6),
+      })
     );
 
   const pop = (result?: any) => popRoute(result);
@@ -131,7 +129,11 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
                   isModal: !!route.options.isModal,
                 }}
               >
-                <StackScaffold index={i} callback={pop}>
+                <StackScaffold
+                  index={i}
+                  callback={pop}
+                  routeProps={route.options.props}
+                >
                   {route.child}
                 </StackScaffold>
               </Context.Provider>

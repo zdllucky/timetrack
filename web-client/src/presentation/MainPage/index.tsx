@@ -14,10 +14,10 @@ import { useLocalTheme } from "../../app/hooks/theme";
 import Scaffold from "../Scaffold";
 import DummyBlock from "../common/DummyBlock";
 import { ArrowBack } from "@mui/icons-material";
-import { useStackNavigator } from "../Router";
+import { createNamedRoute, useStackNavigator } from "../Router";
 import { BottomNavigationBar, useTabs } from "../TabsProvider";
 
-const MainPage: FC = () => {
+const MainPage: FC<{ testProp?: number }> = ({ testProp }) => {
   const {
     theme: { area, mode },
     toggleMode,
@@ -51,7 +51,9 @@ const MainPage: FC = () => {
               </IconButton>
             )}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {t(`${isAuthenticated ? "dashboard" : "sign_in"}`)}
+              {`${t(`${isAuthenticated ? "dashboard" : "sign_in"}`)} ${
+                testProp ?? 0
+              }`}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -81,17 +83,29 @@ const MainPage: FC = () => {
         <Button
           variant={"outlined"}
           onClick={() =>
+            push("/", { props: [10] }).then(() => console.log("Hello Japan!"))
+          }
+        >
+          Named navigate
+        </Button>
+
+        <Button
+          variant={"outlined"}
+          onClick={() =>
             push(<MainPage />, {
               replace: 2,
+              props: [12],
             }).then(() => console.log("Hello Japan!"))
           }
         >
-          Navigate with replace -2
+          Navigate with replace x2
         </Button>
         <Button
           variant={"outlined"}
           onClick={() =>
-            push(<MainPage />, { isModal: true }).then((v) => console.log(v))
+            push(<MainPage />, { isModal: true }).then((v: any) =>
+              console.log(v)
+            )
           }
         >
           Navigate modal
@@ -111,5 +125,7 @@ const MainPage: FC = () => {
     </Scaffold>
   );
 };
+
+createNamedRoute("/", (testProp) => <MainPage testProp={testProp} />);
 
 export default MainPage;
