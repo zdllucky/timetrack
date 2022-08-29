@@ -3,6 +3,7 @@ import React, {
   PropsWithChildren,
   ReactNode,
   useCallback,
+  useEffect,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
@@ -58,7 +59,7 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
       setStack((stack) => {
         if (all) return [];
 
-        currentRoute.resolve(result);
+        result && currentRoute.resolve(result);
         return stack.slice(0, -1);
       });
     },
@@ -96,6 +97,16 @@ export const StackNavigator: FC<StackNavigatorProps> = ({
   const pop = (result?: any) => popRoute(result);
 
   const popAll = () => popRoute(null, true);
+
+  useEffect(() => {
+    function popCurrent() {
+      hidden || !stack.length || popRoute();
+    }
+
+    window.addEventListener("pop_action_call", popCurrent);
+
+    return () => window.removeEventListener("pop_action_call", popCurrent);
+  }, [stack, hidden, popRoute]);
 
   return (
     <div hidden={hidden}>

@@ -11,6 +11,8 @@ import TabsConfig from "./TabsProvider/config";
 import { useLocalTheme } from "../app/hooks/theme";
 import { css, Global } from "@emotion/react";
 
+// TODO: Provide context action buttons to imitate flutter calls
+
 const AppWithNavigation: FC = () => {
   const { currentTab } = useTabs();
 

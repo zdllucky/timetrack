@@ -4,7 +4,6 @@ import { DeepReadonly } from "../../helpers";
 // TODO: Add 'popSome' method
 // TODO: Blocked system pop for route
 // TODO: 'render' prop to unload scaffold render after pushing route
-// WISH: Provide support for pressing back button (Android)
 // WISH: Add shadow
 // WISH: Swipe-able pop method
 // WISH: Adjust animation

@@ -92,6 +92,17 @@ const MainPage: FC<{ testProp?: number }> = ({ testProp }) => {
         <Button
           variant={"outlined"}
           onClick={() =>
+            window.dispatchEvent(
+              new CustomEvent("pop_action_call", { detail: null })
+            )
+          }
+        >
+          Imitate pop
+        </Button>
+
+        <Button
+          variant={"outlined"}
+          onClick={() =>
             push(<MainPage />, {
               replace: 2,
               props: [12],
