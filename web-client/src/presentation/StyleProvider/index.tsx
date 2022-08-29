@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import globalStyle from "./globalStyle";
 import { SafeArea, setArea } from "../../app/slices/theme";
-import { flutterCall } from "./types";
+import { flutterCall } from "../NativeCallMocker";
 import { css, Global } from "@emotion/react";
 import { disableScrolling, enableScrolling } from "../../helpers";
 import useCreateAppTheme from "./useCreateAppTheme";
@@ -57,7 +57,5 @@ const StyleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     </ThemeProvider>
   );
 };
-
-export * from "./types";
 
 export default StyleProvider;

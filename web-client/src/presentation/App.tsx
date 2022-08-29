@@ -8,6 +8,7 @@ import { store } from "../app/store";
 import { Provider as StoreProvider } from "react-redux";
 import { css, Global } from "@emotion/react";
 import { TabsConfig, TabsProvider, useTabs } from "./TabsProvider";
+import { NativeCallMocker } from "./NativeCallMocker";
 
 // TODO: Provide context action buttons to imitate flutter calls
 
@@ -62,10 +63,15 @@ const AppWithTabs: FC = () => {
     </>
   );
 };
+const AppWithNativeCallMocks: FC = () => (
+  <NativeCallMocker>
+    <AppWithTabs />
+  </NativeCallMocker>
+);
 
 const AppWithStyles: FC = () => (
   <StyleProvider>
-    <AppWithTabs />
+    <AppWithNativeCallMocks />
   </StyleProvider>
 );
 
