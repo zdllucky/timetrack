@@ -1,16 +1,15 @@
 import { FC } from "react";
-import { AppBar, Stack, Toolbar, Typography, useTheme } from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import AuthForm from "./blocks/AuthForm";
+import AuthForm from "./components/AuthForm";
 import Scaffold from "../Scaffold";
-import { useLocalTheme } from "../../app/hooks/theme";
+import { useLocalTheme } from "../../app/hooks";
 
 const LoginPage: FC = () => {
   const { t } = useTranslation("translations");
   const {
     theme: { area },
   } = useLocalTheme();
-  const theme = useTheme();
 
   return (
     <Scaffold

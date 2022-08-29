@@ -31,5 +31,5 @@ export const createNamedRoute = (
   });
 
 export * from "./types";
-export * from "./StackNavigator";
+export * from "./components/StackNavigator";
 export * from "./useStackNavigator";

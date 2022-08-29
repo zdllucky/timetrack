@@ -8,9 +8,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useIsAuthenticated } from "../../app/hooks/auth";
+import { useIsAuthenticated, useLocalTheme } from "../../app/hooks";
 import { useTranslation } from "react-i18next";
-import { useLocalTheme } from "../../app/hooks/theme";
 import Scaffold from "../Scaffold";
 import DummyBlock from "../common/DummyBlock";
 import { ArrowBack } from "@mui/icons-material";

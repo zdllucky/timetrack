@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
 import { getAuthToken } from "../slices/auth";
 import { useMemo } from "react";
+import { useTypedSelector } from "./store";
 
 export const useIsAuthenticated = () => {
-  const authToken = useSelector(getAuthToken);
+  const authToken = useTypedSelector(getAuthToken);
 
   return useMemo(() => !!authToken, [authToken]);
 };

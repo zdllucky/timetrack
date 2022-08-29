@@ -1,20 +1,19 @@
-import { useLocalTheme } from "../../app/hooks/theme";
+import { useAppDispatch, useLocalTheme } from "../../app/hooks";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import globalStyle from "./globalStyle";
-import { useDispatch } from "react-redux";
 import { SafeArea, setArea } from "../../app/slices/theme";
 import { flutterCall } from "./types";
 import { css, Global } from "@emotion/react";
 import { disableScrolling, enableScrolling } from "../../helpers";
-import useCreateAppTheme from "./createAppTheme";
+import useCreateAppTheme from "./useCreateAppTheme";
 
 const StyleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
     theme: { mode },
   } = useLocalTheme();
   const theme = useCreateAppTheme(mode);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [height, setHeight] = useState<number>(window.visualViewport.height);
 
   function updateSafeArea(event: Event) {
@@ -25,6 +24,7 @@ const StyleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     flutterCall((f) =>
       f.callHandler("set_safe_constraints").then(updateSafeArea)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const StyleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       enableScrolling();
       window.removeEventListener("update_safe_constraints", updateSafeArea);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
