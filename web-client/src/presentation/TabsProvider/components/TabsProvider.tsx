@@ -1,5 +1,5 @@
-import TabsConfig from "../config";
 import { createContext, FC, PropsWithChildren, useState } from "react";
+import { TabsConfig } from "../config";
 
 export const TabsContext = createContext<{
   currentTab: number;

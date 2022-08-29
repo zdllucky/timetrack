@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import TabsConfig from "../config";
 import { useStackNavigator } from "../../Router";
 import { getTheme } from "../../../app/slices/theme";
 import { useTypedSelector } from "../../../app/hooks";
 import { useTabs } from "../useTabs";
+import { TabsConfig } from "../config";
 
 export const BottomNavigationBar: FC = () => {
   const { currentTab, setTab } = useTabs();

@@ -10,7 +10,7 @@ import {
   StackNavigatorPushOptions,
 } from "../index";
 import { nanoid } from "nanoid";
-import StackScaffold from "./StackScaffold";
+import { StackScaffold } from "./StackScaffold";
 
 export const StackNavigator: FC<StackNavigatorProps> = ({
   root,

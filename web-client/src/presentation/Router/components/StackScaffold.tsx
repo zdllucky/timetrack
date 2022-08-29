@@ -11,7 +11,7 @@ const swipeConfig = {
   touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
 };
 
-const StackScaffold: FC<
+export const StackScaffold: FC<
   PropsWithChildren<{ index: number; callback: () => void; routeProps?: any }>
 > = ({ children, index, callback }) => {
   const handlers = useSwipeable({
@@ -25,5 +25,3 @@ const StackScaffold: FC<
     </div>
   );
 };
-
-export default StackScaffold;
