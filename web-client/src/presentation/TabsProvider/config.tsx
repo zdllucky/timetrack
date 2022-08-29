@@ -11,7 +11,7 @@ export type TabConfig = {
   ctx: Context<StackNavigatorContextData>;
 };
 
-const TabsConfig: TabConfig[] = [
+export const TabsConfig: TabConfig[] = [
   {
     label: "Main",
     icon: <Dashboard />,
@@ -25,5 +25,3 @@ const TabsConfig: TabConfig[] = [
     ctx: createContext(defaultContextData),
   },
 ];
-
-export default TabsConfig;

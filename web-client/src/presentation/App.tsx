@@ -2,13 +2,12 @@ import LoginPage from "./LoginPage";
 import { SnackbarProvider } from "notistack";
 import { useIsAuthenticated, useLocalTheme } from "../app/hooks";
 import StyleProvider from "./StyleProvider";
-import TabsProvider, { useTabs } from "./TabsProvider";
 import { StackNavigator } from "./Router";
 import { FC } from "react";
 import { store } from "../app/store";
 import { Provider as StoreProvider } from "react-redux";
-import TabsConfig from "./TabsProvider/config";
 import { css, Global } from "@emotion/react";
+import { TabsConfig, TabsProvider, useTabs } from "./TabsProvider";
 
 // TODO: Provide context action buttons to imitate flutter calls
 
