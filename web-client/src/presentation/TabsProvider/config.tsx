@@ -1,8 +1,19 @@
 import { Context, createContext, ReactNode } from "react";
-import { defaultContextData, StackNavigatorContextData } from "../Router";
+import { StackNavigatorContextData } from "../Router";
 import MainPage from "../MainPage";
 import ProfilePage from "../ProfilePage";
 import { Dashboard, Person } from "@mui/icons-material";
+
+const data: StackNavigatorContextData = {
+  push: async () => {},
+  pop() {},
+  popAll() {},
+  canPop: false,
+  isModal: false,
+};
+
+export const createDefaultContextData: () => Context<StackNavigatorContextData> =
+  () => createContext(data);
 
 export type TabConfig = {
   label: string;
@@ -11,19 +22,17 @@ export type TabConfig = {
   ctx: Context<StackNavigatorContextData>;
 };
 
-const TabsConfig: TabConfig[] = [
+export const TabsConfig: TabConfig[] = [
   {
     label: "Main",
     icon: <Dashboard />,
     root: <MainPage />,
-    ctx: createContext(defaultContextData),
+    ctx: createDefaultContextData(),
   },
   {
     label: "Profile",
     root: <ProfilePage />,
     icon: <Person />,
-    ctx: createContext(defaultContextData),
+    ctx: createDefaultContextData(),
   },
 ];
-
-export default TabsConfig;

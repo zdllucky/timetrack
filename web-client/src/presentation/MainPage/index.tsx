@@ -7,23 +7,20 @@ import {
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
-import { useIsAuthenticated } from "../../app/hooks/auth";
+import { useIsAuthenticated, useLocalTheme } from "../../app/hooks";
 import { useTranslation } from "react-i18next";
-import { useLocalTheme } from "../../app/hooks/theme";
 import Scaffold from "../Scaffold";
 import DummyBlock from "../common/DummyBlock";
 import { ArrowBack } from "@mui/icons-material";
-import { useStackNavigator } from "../Router";
+import { createNamedRoute, useStackNavigator } from "../Router";
 import { BottomNavigationBar, useTabs } from "../TabsProvider";
 
-const MainPage: FC = () => {
+const MainPage: FC<{ testProp?: number }> = ({ testProp }) => {
   const {
     theme: { area, mode },
     toggleMode,
   } = useLocalTheme();
-  const theme = useTheme();
   const isAuthenticated: boolean = useIsAuthenticated();
   const { t, i18n } = useTranslation("translations");
   const { pop, push, canPop } = useStackNavigator();
@@ -37,8 +34,6 @@ const MainPage: FC = () => {
           position="static"
           sx={{
             pt: `${area?.offsetTop}px`,
-            // backgroundColor: theme.palette.background.paper,
-            // color: theme.palette.text.primary,
           }}
         >
           <Toolbar>
@@ -55,13 +50,15 @@ const MainPage: FC = () => {
               </IconButton>
             )}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {t(`${isAuthenticated ? "dashboard" : "sign_in"}`)}
+              {`${t(`${isAuthenticated ? "dashboard" : "sign_in"}`)} ${
+                testProp ?? 0
+              }`}
             </Typography>
           </Toolbar>
         </AppBar>
       }
     >
-      <Stack sx={{ p: 2 }} direction="row" spacing={1}>
+      <Stack sx={{ p: 2 }} direction="row" gap={1} flexWrap={"wrap"}>
         <Button
           variant={"outlined"}
           onClick={() =>
@@ -81,9 +78,45 @@ const MainPage: FC = () => {
         >
           Navigate
         </Button>
+
         <Button
           variant={"outlined"}
-          onClick={() => push(<MainPage />, true).then((v) => console.log(v))}
+          onClick={() =>
+            push("/", { props: [10] }).then(() => console.log("Hello Japan!"))
+          }
+        >
+          Named navigate
+        </Button>
+
+        <Button
+          variant={"outlined"}
+          onClick={() =>
+            window.dispatchEvent(
+              new CustomEvent("pop_action_call", { detail: null })
+            )
+          }
+        >
+          Imitate pop
+        </Button>
+
+        <Button
+          variant={"outlined"}
+          onClick={() =>
+            push(<MainPage />, {
+              replace: 2,
+              props: [12],
+            }).then(() => console.log("Hello Japan!"))
+          }
+        >
+          Navigate with replace x2
+        </Button>
+        <Button
+          variant={"outlined"}
+          onClick={() =>
+            push(<MainPage />, { isModal: true }).then((v: any) =>
+              console.log(v)
+            )
+          }
         >
           Navigate modal
         </Button>
@@ -102,5 +135,7 @@ const MainPage: FC = () => {
     </Scaffold>
   );
 };
+
+createNamedRoute("/", (testProp) => <MainPage testProp={testProp} />);
 
 export default MainPage;

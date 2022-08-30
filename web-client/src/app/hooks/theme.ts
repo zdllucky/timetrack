@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
 import { getTheme, setMode, ThemeMode, toggleMode } from "../slices/theme";
 import { useMemo } from "react";
+import { useAppDispatch, useTypedSelector } from "./store";
 
 export const useLocalTheme = () => {
-  const theme = useSelector(getTheme);
-  const dispatch = useDispatch();
+  const theme = useTypedSelector(getTheme);
+  const dispatch = useAppDispatch();
 
   // noinspection JSUnusedGlobalSymbols
   return useMemo(

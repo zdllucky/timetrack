@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, ReactNode, useMemo } from "react";
 import { Box, Paper, useTheme } from "@mui/material";
 import { BoxProps } from "@mui/material/Box/Box";
 import { merge } from "lodash";
-import { useLocalTheme } from "../../app/hooks/theme";
+import { useLocalTheme } from "../../app/hooks";
 
 const Scaffold: FC<
   PropsWithChildren<
@@ -42,7 +42,7 @@ const Scaffold: FC<
         flexDirection: "column",
       },
     }),
-    [theme, fullscreen, bottomBar]
+    [theme, fullscreen, bottomBar, area?.offsetBottom]
   );
 
   return (

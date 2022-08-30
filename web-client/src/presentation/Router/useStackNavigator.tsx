@@ -1,6 +1,5 @@
 import { useContext } from "react";
-import { useTabs } from "../TabsProvider";
-import TabsConfig from "../TabsProvider/config";
+import { TabsConfig, useTabs } from "../TabsProvider";
 import { StackNavigatorContextData } from "./";
 
 export const useStackNavigator = (

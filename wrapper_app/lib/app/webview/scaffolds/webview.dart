@@ -23,32 +23,39 @@ class Webview extends StatelessWidget {
               BlocBuilder<HostAvailabilityCubit, HostAvailabilityState>(
             builder: (context, hostAvailabilityState) =>
                 BlocBuilder<WebviewControllerCubit, InAppWebViewController?>(
-              builder: (context, controller) => SafeConstraintsProvider(
-                builder: (context, constraints) => Scaffold(
-                  body: InAppWebView(
-                    key: webViewKey,
-                    initialUrlRequest: URLRequest(
-                        url: Uri.parse(host.uri).replace(port: 3001)),
-                    initialOptions: webViewOptions,
-                    onWebViewCreated: (controller) {
-                      get<HostAvailabilityCubit>().hostLoading();
-                      get<WebviewControllerCubit>()
-                        ..controller = controller
-                        ..initHandlers(context);
-                    },
-                    onLoadStop: (_, __) =>
-                        get<HostAvailabilityCubit>().hostLoaded(),
-                    onLoadError: (_, path, code, message) =>
-                        get<HostAvailabilityCubit>()
-                            .hostLoadError(path.toString(), code, message),
-                    androidOnPermissionRequest:
-                        (controller, origin, resources) async =>
-                            PermissionRequestResponse(
-                                resources: resources,
-                                action: PermissionRequestResponseAction.GRANT),
-                    shouldOverrideUrlLoading: shouldOverrideUrlLoading,
-                    onConsoleMessage: (controller, consoleMessage) =>
-                        debugPrint(consoleMessage.toString()),
+              builder: (context, controller) => WillPopScope(
+                onWillPop: () async {
+                  get<WebviewControllerCubit>()
+                      .sendEvent(name: 'pop_action_call');
+                  return false;
+                },
+                child: SafeConstraintsProvider(
+                  builder: (context, constraints) => Scaffold(
+                    body: InAppWebView(
+                      key: webViewKey,
+                      initialUrlRequest: URLRequest(
+                          url: Uri.parse(host.uri).replace(port: 3001)),
+                      initialOptions: webViewOptions,
+                      onWebViewCreated: (controller) {
+                        get<HostAvailabilityCubit>().hostLoading();
+                        get<WebviewControllerCubit>()
+                          ..controller = controller
+                          ..initHandlers(context);
+                      },
+                      onLoadStop: (_, __) =>
+                          get<HostAvailabilityCubit>().hostLoaded(),
+                      onLoadError: (_, path, code, message) =>
+                          get<HostAvailabilityCubit>()
+                              .hostLoadError(path.toString(), code, message),
+                      androidOnPermissionRequest: (controller, origin,
+                              resources) async =>
+                          PermissionRequestResponse(
+                              resources: resources,
+                              action: PermissionRequestResponseAction.GRANT),
+                      shouldOverrideUrlLoading: shouldOverrideUrlLoading,
+                      onConsoleMessage: (controller, consoleMessage) =>
+                          debugPrint(consoleMessage.toString()),
+                    ),
                   ),
                 ),
               ),

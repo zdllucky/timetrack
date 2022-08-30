@@ -1,16 +1,16 @@
 import LoginPage from "./LoginPage";
 import { SnackbarProvider } from "notistack";
-import { useIsAuthenticated } from "../app/hooks/auth";
+import { useIsAuthenticated, useLocalTheme } from "../app/hooks";
 import StyleProvider from "./StyleProvider";
-import TabsProvider, { useTabs } from "./TabsProvider";
 import { StackNavigator } from "./Router";
 import { FC } from "react";
-
 import { store } from "../app/store";
 import { Provider as StoreProvider } from "react-redux";
-import TabsConfig from "./TabsProvider/config";
-import { useLocalTheme } from "../app/hooks/theme";
 import { css, Global } from "@emotion/react";
+import { TabsConfig, TabsProvider, useTabs } from "./TabsProvider";
+import { NativeCallMocker } from "./NativeCallMocker";
+
+// TODO: Provide context action buttons to imitate flutter calls
 
 const AppWithNavigation: FC = () => {
   const { currentTab } = useTabs();
@@ -63,10 +63,15 @@ const AppWithTabs: FC = () => {
     </>
   );
 };
+const AppWithNativeCallMocks: FC = () => (
+  <NativeCallMocker>
+    <AppWithTabs />
+  </NativeCallMocker>
+);
 
 const AppWithStyles: FC = () => (
   <StyleProvider>
-    <AppWithTabs />
+    <AppWithNativeCallMocks />
   </StyleProvider>
 );
 

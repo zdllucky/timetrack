@@ -16,13 +16,8 @@ class SafeConstraintsCubit extends Cubit<SafeConstraints?> {
     final controller = get<WebviewControllerCubit>().state;
 
     if (controller != null && change.nextState != null) {
-      final jsCode = """
-        window.dispatchEvent(new CustomEvent("update_safe_constraints", ${{
-        "detail": change.nextState!.toJson()
-      }.toString()}));
-      """;
-
-      get<WebviewControllerCubit>().state!.evaluateJavascript(source: jsCode);
+      get<WebviewControllerCubit>().sendEvent(
+          name: 'update_safe_constraints', payload: change.nextState!.toJson());
     }
   }
 

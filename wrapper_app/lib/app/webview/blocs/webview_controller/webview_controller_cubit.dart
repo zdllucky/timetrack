@@ -16,4 +16,17 @@ class WebviewControllerCubit extends Cubit<InAppWebViewController?> {
       HandlersConfigurator([safeConstraintsHandler]).init(context, state!);
     }
   }
+
+  void sendEvent({
+    required String name,
+    Map<String, dynamic>? payload,
+  }) {
+    final jsCode = """
+        window.dispatchEvent(new CustomEvent("$name", ${{
+      "detail": payload
+    }.toString()}));
+      """;
+
+    state!.evaluateJavascript(source: jsCode);
+  }
 }
