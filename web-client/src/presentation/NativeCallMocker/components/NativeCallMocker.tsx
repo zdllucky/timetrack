@@ -11,7 +11,7 @@ import AddToHomeScreenIcon from "@mui/icons-material/AddToHomeScreen";
 import { ButtonsBlock } from "./ButtonsBlock";
 
 export const NativeCallMocker: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer =
     (open: boolean) => (event: KeyboardEvent | MouseEvent) => {

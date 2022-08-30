@@ -5,6 +5,7 @@ POSTGRES_DB=timetrack
 POSTGRES_HOST=localhost
 
 # Test core module args
+REDIS_HOST=localhost
 SESSION_SECRET=yLG4GI1D76IS7vOW3olZZ6C0qbUV4Jaa
 OWNER_USERNAME=zdllucky
 OWNER_PASSWORD=test123123

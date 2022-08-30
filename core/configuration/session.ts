@@ -4,7 +4,7 @@ import { e } from "../helpers";
 import { createClient } from "@redis/client";
 
 export const client = createClient({
-  url: `redis://localhost:6379`,
+  url: `redis://${e`REDIS_HOST`}:6379`,
 });
 
 const session = storedSessions({

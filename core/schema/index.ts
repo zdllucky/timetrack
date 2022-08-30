@@ -6,6 +6,7 @@ import { departmentAccesses } from "./department/accesses";
 import { Department } from "./department";
 import { settingAccesses } from "./setting/accesses";
 import Setting from "./setting";
+import History from "./history";
 import { ListSchemaConfig } from "@keystone-6/core/types";
 
 export const accesses: Array<SystemAccess> = [
@@ -51,6 +52,7 @@ const lists: ListSchemaConfig = {
   Access,
   Department,
   Setting,
+  History,
 };
 
 export default lists;

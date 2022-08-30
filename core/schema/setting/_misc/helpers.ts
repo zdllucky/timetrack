@@ -2,6 +2,8 @@ import { TextFieldConfig } from "@keystone-6/core/dist/declarations/src/fields/t
 import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/type-info";
 import { text } from "@keystone-6/core/fields";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const SettingType = {
   text: (data: Partial<TextFieldConfig<BaseListTypeInfo>>) => text({ ...data }),
   longText: (data: Partial<TextFieldConfig<BaseListTypeInfo>>) =>

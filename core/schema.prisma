@@ -21,7 +21,6 @@ model User {
   worksIn  Department[] @relation("Department_workers")
   manages  Department[] @relation("Department_managers")
   headOf   Department[] @relation("Department_heads")
-  history  Json?        @default("[]")
 }
 
 model Access {
@@ -41,14 +40,22 @@ model Department {
   workers        User[]       @relation("Department_workers")
   isControlledBy Department[] @relation("Department_controls")
   controls       Department[] @relation("Department_controls")
-  history        Json?        @default("[]")
 }
 
 model Setting {
   id          String @id @default(cuid())
   projectID   String @default("horns_n_hooves")
   projectName String @default("Horns&Hooves")
-  history     Json?  @default("[]")
+}
+
+model History {
+  id            String    @id @default(cuid())
+  list          String    @default("")
+  ref           String    @default("")
+  at            DateTime?
+  by            String    @default("")
+  operation     String    @default("")
+  updatedFields Json?
 }
 
 enum AccessTypeType {
