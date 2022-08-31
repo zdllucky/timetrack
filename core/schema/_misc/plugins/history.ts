@@ -1,48 +1,17 @@
-import { json } from "@keystone-6/core/fields";
 import { ListHooks } from "@keystone-6/core/dist/declarations/src/types/config/hooks";
 import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/type-info";
+import { MutationCreateHistoryArgs } from "../../../schema_types";
 
 export const updateHistory: ListHooks<BaseListTypeInfo>["afterOperation"] =
   async ({ listKey, operation, originalItem, item, resolvedData, context }) => {
-    if (
-      operation !== "delete" &&
-      (operation === "create" || !resolvedData["history"])
-    )
-      await context.sudo().query[listKey].updateOne({
-        where: { id: item.id as string },
-        data: {
-          history: [
-            {
-              at: Date.now(),
-              operation,
-              updatedFields: Object.keys(resolvedData),
-              by: context.session
-                ? {
-                    id: context.session.itemId,
-                    login: context.session.data.login,
-                  }
-                : {
-                    id: "system/public",
-                  },
-            },
-            ...(originalItem ? (originalItem.history as []) : []),
-          ],
-        },
-      });
-  };
-
-export const history = () =>
-  json({
-    ui: {
-      listView: {
-        fieldMode: "hidden",
+    await context.sudo().query.History.createOne(<MutationCreateHistoryArgs>{
+      data: {
+        list: listKey,
+        ref: originalItem?.id ?? item?.id,
+        at: new Date().toISOString(),
+        operation,
+        updatedFields: Object.keys(resolvedData ?? {}),
+        by: context.session ? context.session.itemId : "system/public",
       },
-      itemView: { fieldMode: "read" },
-      createView: { fieldMode: "hidden" },
-    },
-    defaultValue: [],
-    access: {
-      update: () => false,
-      create: () => false,
-    },
-  });
+    });
+  };

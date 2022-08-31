@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { text } from "@keystone-6/core/fields";
-import { history, updateHistory } from "../_misc/plugins/history";
+import { updateHistory } from "../_misc/plugins/history";
 import { a } from "../access";
 
 const Setting = list({
@@ -10,7 +10,7 @@ const Setting = list({
       validation: {
         isRequired: true,
         match: {
-          regex: /^[a-zA-Z0-9_]{3,}$/g,
+          regex: /^\w{3,}$/g,
         },
       },
       access: {
@@ -26,7 +26,6 @@ const Setting = list({
         update: (data) => a(data)`Owner`,
       },
     }),
-    history: history(),
   },
   access: {
     operation: {

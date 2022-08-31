@@ -33,7 +33,6 @@ type User {
     skip: Int! = 0
   ): [Department!]
   headOfCount(where: DepartmentWhereInput! = {}): Int
-  history: JSON
 }
 
 type PasswordState {
@@ -131,7 +130,6 @@ input UserUpdateInput {
   worksIn: DepartmentRelateToManyForUpdateInput
   manages: DepartmentRelateToManyForUpdateInput
   headOf: DepartmentRelateToManyForUpdateInput
-  history: JSON
 }
 
 input AccessRelateToManyForUpdateInput {
@@ -160,7 +158,6 @@ input UserCreateInput {
   worksIn: DepartmentRelateToManyForCreateInput
   manages: DepartmentRelateToManyForCreateInput
   headOf: DepartmentRelateToManyForCreateInput
-  history: JSON
 }
 
 input AccessRelateToManyForCreateInput {
@@ -284,7 +281,6 @@ type Department {
     skip: Int! = 0
   ): [Department!]
   controlsCount(where: DepartmentWhereInput! = {}): Int
-  history: JSON
 }
 
 input DepartmentWhereUniqueInput {
@@ -322,7 +318,6 @@ input DepartmentUpdateInput {
   workers: UserRelateToManyForUpdateInput
   isControlledBy: DepartmentRelateToManyForUpdateInput
   controls: DepartmentRelateToManyForUpdateInput
-  history: JSON
 }
 
 input UserRelateToManyForUpdateInput {
@@ -344,7 +339,6 @@ input DepartmentCreateInput {
   workers: UserRelateToManyForCreateInput
   isControlledBy: DepartmentRelateToManyForCreateInput
   controls: DepartmentRelateToManyForCreateInput
-  history: JSON
 }
 
 input UserRelateToManyForCreateInput {
@@ -356,7 +350,6 @@ type Setting {
   id: ID!
   projectID: String
   projectName: String
-  history: JSON
 }
 
 input SettingWhereUniqueInput {
@@ -381,12 +374,83 @@ input SettingOrderByInput {
 input SettingUpdateInput {
   projectID: String
   projectName: String
-  history: JSON
 }
 
 input SettingUpdateArgs {
   where: SettingWhereUniqueInput!
   data: SettingUpdateInput!
+}
+
+type History {
+  id: ID!
+  list: String
+  ref: String
+  at: DateTime
+  by: String
+  operation: String
+  updatedFields: JSON
+}
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input HistoryWhereUniqueInput {
+  id: ID
+}
+
+input HistoryWhereInput {
+  AND: [HistoryWhereInput!]
+  OR: [HistoryWhereInput!]
+  NOT: [HistoryWhereInput!]
+  id: IDFilter
+  list: StringFilter
+  ref: StringFilter
+  at: DateTimeNullableFilter
+  by: StringFilter
+  operation: StringFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input HistoryOrderByInput {
+  id: OrderDirection
+  list: OrderDirection
+  ref: OrderDirection
+  at: OrderDirection
+  by: OrderDirection
+  operation: OrderDirection
+}
+
+input HistoryUpdateInput {
+  list: String
+  ref: String
+  at: DateTime
+  by: String
+  operation: String
+  updatedFields: JSON
+}
+
+input HistoryUpdateArgs {
+  where: HistoryWhereUniqueInput!
+  data: HistoryUpdateInput!
+}
+
+input HistoryCreateInput {
+  list: String
+  ref: String
+  at: DateTime
+  by: String
+  operation: String
+  updatedFields: JSON
 }
 
 """
@@ -424,6 +488,15 @@ type Mutation {
     data: SettingUpdateInput!
   ): Setting
   updateSettings(data: [SettingUpdateArgs!]!): [Setting]
+  createHistory(data: HistoryCreateInput!): History
+  createHistories(data: [HistoryCreateInput!]!): [History]
+  updateHistory(
+    where: HistoryWhereUniqueInput!
+    data: HistoryUpdateInput!
+  ): History
+  updateHistories(data: [HistoryUpdateArgs!]!): [History]
+  deleteHistory(where: HistoryWhereUniqueInput!): History
+  deleteHistories(where: [HistoryWhereUniqueInput!]!): [History]
   endSession: Boolean!
   authenticateUserWithPassword(
     login: String!
@@ -485,6 +558,14 @@ type Query {
   ): [Setting!]
   setting(where: SettingWhereUniqueInput!): Setting
   settingsCount(where: SettingWhereInput! = {}): Int
+  histories(
+    where: HistoryWhereInput! = {}
+    orderBy: [HistoryOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [History!]
+  history(where: HistoryWhereUniqueInput!): History
+  historiesCount(where: HistoryWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

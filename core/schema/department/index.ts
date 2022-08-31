@@ -1,5 +1,5 @@
 import { list } from "@keystone-6/core";
-import { history, updateHistory } from "../_misc/plugins/history";
+import { updateHistory } from "../_misc/plugins/history";
 import { relationship, text } from "@keystone-6/core/fields";
 import { a, filterOr } from "../access";
 import { DepartmentAccessResolvers } from "./accesses";
@@ -45,7 +45,6 @@ export const Department = list({
         update: async (data) => await a(data)`UpdateAnyDepartment`,
       },
     }),
-    history: history(),
   },
   hooks: {
     afterOperation: updateHistory,
