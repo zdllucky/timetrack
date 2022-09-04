@@ -285,6 +285,7 @@ type Department {
 
 input DepartmentWhereUniqueInput {
   id: ID
+  name: String
 }
 
 input DepartmentWhereInput {
@@ -453,6 +454,72 @@ input HistoryCreateInput {
   updatedFields: JSON
 }
 
+type ShiftRule {
+  id: ID!
+  name: String
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
+  departments(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  departmentsCount(where: DepartmentWhereInput! = {}): Int
+  active: Boolean
+}
+
+input ShiftRuleWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+input ShiftRuleWhereInput {
+  AND: [ShiftRuleWhereInput!]
+  OR: [ShiftRuleWhereInput!]
+  NOT: [ShiftRuleWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  users: UserManyRelationFilter
+  departments: DepartmentManyRelationFilter
+  active: BooleanFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input ShiftRuleOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  active: OrderDirection
+}
+
+input ShiftRuleUpdateInput {
+  name: String
+  users: UserRelateToManyForUpdateInput
+  departments: DepartmentRelateToManyForUpdateInput
+  active: Boolean
+}
+
+input ShiftRuleUpdateArgs {
+  where: ShiftRuleWhereUniqueInput!
+  data: ShiftRuleUpdateInput!
+}
+
+input ShiftRuleCreateInput {
+  name: String
+  users: UserRelateToManyForCreateInput
+  departments: DepartmentRelateToManyForCreateInput
+  active: Boolean
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -497,6 +564,15 @@ type Mutation {
   updateHistories(data: [HistoryUpdateArgs!]!): [History]
   deleteHistory(where: HistoryWhereUniqueInput!): History
   deleteHistories(where: [HistoryWhereUniqueInput!]!): [History]
+  createShiftRule(data: ShiftRuleCreateInput!): ShiftRule
+  createShiftRules(data: [ShiftRuleCreateInput!]!): [ShiftRule]
+  updateShiftRule(
+    where: ShiftRuleWhereUniqueInput!
+    data: ShiftRuleUpdateInput!
+  ): ShiftRule
+  updateShiftRules(data: [ShiftRuleUpdateArgs!]!): [ShiftRule]
+  deleteShiftRule(where: ShiftRuleWhereUniqueInput!): ShiftRule
+  deleteShiftRules(where: [ShiftRuleWhereUniqueInput!]!): [ShiftRule]
   endSession: Boolean!
   authenticateUserWithPassword(
     login: String!
@@ -566,6 +642,14 @@ type Query {
   ): [History!]
   history(where: HistoryWhereUniqueInput!): History
   historiesCount(where: HistoryWhereInput! = {}): Int
+  shiftRules(
+    where: ShiftRuleWhereInput! = {}
+    orderBy: [ShiftRuleOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [ShiftRule!]
+  shiftRule(where: ShiftRuleWhereUniqueInput!): ShiftRule
+  shiftRulesCount(where: ShiftRuleWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

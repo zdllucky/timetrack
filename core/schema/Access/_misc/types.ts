@@ -33,11 +33,8 @@ export type SystemAccess = {
   contains?: Array<string>;
   resolver?: (data: Array<unknown>) => MaybePromise<boolean> | undefined;
 };
-
-export type AccessResolvers = Record<
-  string,
-  <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
-    data: A
-    // eslint-disable-next-line
-  ) => Promise<any>
->;
+/**
+ * @deprecated in flavor of direct access type injection
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AccessResolvers = Record<string, (data: any) => MaybePromise<any>>;

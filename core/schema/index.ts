@@ -1,19 +1,24 @@
-import User from "./user";
-import Access, { AccessTypes, declareAccess, SystemAccess } from "./access";
-import { accessAccesses } from "./access/accesses";
-import { userAccesses } from "./user/accesses";
-import { departmentAccesses } from "./department/accesses";
-import { Department } from "./department";
-import { settingAccesses } from "./setting/accesses";
-import Setting from "./setting";
-import History from "./history";
+import User from "./User";
+import Access, { AccessTypes, declareAccess, SystemAccess } from "./Access";
+import { accessAccesses } from "./Access/accesses";
+import { departmentAccesses } from "./Department/accesses";
+import { Department } from "./Department";
+import { settingAccesses } from "./Setting/accesses";
+import Setting from "./Setting";
+import History from "./History";
 import { ListSchemaConfig } from "@keystone-6/core/types";
+import { historyAccesses } from "./History/accesses";
+import { shiftRuleAccesses } from "./ShiftRule/accesses";
+import ShiftRule from "./ShiftRule";
+import { userAccesses } from "./User/accesses";
 
 export const accesses: Array<SystemAccess> = [
   ...accessAccesses,
   ...userAccesses,
   ...departmentAccesses,
   ...settingAccesses,
+  ...historyAccesses,
+  ...shiftRuleAccesses,
   declareAccess({
     name: "AdminAnything",
     contains: ["AdminAnyUser", "AdminAnyAccess", "AdminAnyDepartment"],
@@ -21,7 +26,7 @@ export const accesses: Array<SystemAccess> = [
   declareAccess({
     name: "Owner",
     type: AccessTypes.ROLE,
-    contains: ["Administrator"],
+    contains: ["Administrator", "QueryAnyHistory", "CreateAnyUser"],
   }),
   declareAccess({
     name: "Administrator",
@@ -33,6 +38,7 @@ export const accesses: Array<SystemAccess> = [
       "CreateAnyDepartment",
       "UpdateAnyDepartment",
       "UpdateAnySetting",
+      "AdminAnyShiftRule",
     ],
   }),
   declareAccess({
@@ -43,6 +49,7 @@ export const accesses: Array<SystemAccess> = [
       "QueryAnyAccess",
       "QueryAnyDepartment",
       "QueryAnySetting",
+      "QueryAnyShiftRule",
     ],
   }),
 ];
@@ -53,6 +60,7 @@ const lists: ListSchemaConfig = {
   Department,
   Setting,
   History,
+  ShiftRule,
 };
 
 export default lists;

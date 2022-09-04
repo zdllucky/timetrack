@@ -1,4 +1,4 @@
-import { a, AccessResolvers, declareAccess, SystemAccess } from "../access";
+import { a, AccessResolvers, declareAccess, SystemAccess } from "../Access";
 import { QueryUsersArgs } from "../../schema_types";
 
 export const departmentAccesses: Array<SystemAccess> = [

@@ -14,13 +14,14 @@ generator client {
 }
 
 model User {
-  id       String       @id @default(cuid())
-  login    String       @unique @default("")
-  password String
-  access   Access[]     @relation("User_access")
-  worksIn  Department[] @relation("Department_workers")
-  manages  Department[] @relation("Department_managers")
-  headOf   Department[] @relation("Department_heads")
+  id                   String       @id @default(cuid())
+  login                String       @unique @default("")
+  password             String
+  access               Access[]     @relation("User_access")
+  worksIn              Department[] @relation("Department_workers")
+  manages              Department[] @relation("Department_managers")
+  headOf               Department[] @relation("Department_heads")
+  from_ShiftRule_users ShiftRule[]  @relation("ShiftRule_users")
 }
 
 model Access {
@@ -33,13 +34,14 @@ model Access {
 }
 
 model Department {
-  id             String       @id @default(cuid())
-  name           String       @default("")
-  heads          User[]       @relation("Department_heads")
-  managers       User[]       @relation("Department_managers")
-  workers        User[]       @relation("Department_workers")
-  isControlledBy Department[] @relation("Department_controls")
-  controls       Department[] @relation("Department_controls")
+  id                         String       @id @default(cuid())
+  name                       String       @unique @default("")
+  heads                      User[]       @relation("Department_heads")
+  managers                   User[]       @relation("Department_managers")
+  workers                    User[]       @relation("Department_workers")
+  isControlledBy             Department[] @relation("Department_controls")
+  controls                   Department[] @relation("Department_controls")
+  from_ShiftRule_departments ShiftRule[]  @relation("ShiftRule_departments")
 }
 
 model Setting {
@@ -56,6 +58,14 @@ model History {
   by            String    @default("")
   operation     String    @default("")
   updatedFields Json?
+}
+
+model ShiftRule {
+  id          String       @id @default(cuid())
+  name        String       @unique @default("")
+  users       User[]       @relation("ShiftRule_users")
+  departments Department[] @relation("ShiftRule_departments")
+  active      Boolean      @default(false)
 }
 
 enum AccessTypeType {
