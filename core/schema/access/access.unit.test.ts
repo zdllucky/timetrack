@@ -1,5 +1,3 @@
-// const runner = setupTestRunner({ config });
-
 import { accesses } from "../index";
 import { SystemAccess } from "./_misc/types";
 

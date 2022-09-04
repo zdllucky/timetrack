@@ -14,13 +14,14 @@ generator client {
 }
 
 model User {
-  id       String       @id @default(cuid())
-  login    String       @unique @default("")
-  password String
-  access   Access[]     @relation("User_access")
-  worksIn  Department[] @relation("Department_workers")
-  manages  Department[] @relation("Department_managers")
-  headOf   Department[] @relation("Department_heads")
+  id                   String       @id @default(cuid())
+  login                String       @unique @default("")
+  password             String
+  access               Access[]     @relation("User_access")
+  worksIn              Department[] @relation("Department_workers")
+  manages              Department[] @relation("Department_managers")
+  headOf               Department[] @relation("Department_heads")
+  from_ShiftRule_users ShiftRule[]  @relation("ShiftRule_users")
 }
 
 model Access {
@@ -56,6 +57,13 @@ model History {
   by            String    @default("")
   operation     String    @default("")
   updatedFields Json?
+}
+
+model ShiftRule {
+  id     String  @id @default(cuid())
+  name   String  @default("")
+  users  User[]  @relation("ShiftRule_users")
+  active Boolean @default(false)
 }
 
 enum AccessTypeType {
