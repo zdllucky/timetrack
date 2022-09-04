@@ -16,11 +16,7 @@ describe("Shift rules schema", () => {
   let testUser: any;
   let testDepartManagerUser: any;
 
-  // Create rule, department, user +
-  // Link user to the department +
-  // Link rule to the department, link rule to user of the department then unlink
-  // Link Manager to another department, repeat upper step
-  it.skip("can be linked to departments/users by manager for his departments only", async () => {
+  it("can be linked to departments/users by manager for his departments only", async () => {
     const managerContext = await createUserSession(
       context,
       testDepartManagerUser
@@ -72,7 +68,7 @@ describe("Shift rules schema", () => {
       variables: { id: createRes.id },
     });
 
-    expect(connectResFailing.errors).toHaveLength(2);
+    expect(connectResFailing.errors).toHaveLength(1);
 
     const disconnectResFailing = await userContext.graphql.raw({
       query: gql`
@@ -89,10 +85,10 @@ describe("Shift rules schema", () => {
           }
         }
       `,
-      variables: { id: createRes.data?.createShiftRule.id },
+      variables: { id: createRes.id },
     });
 
-    expect(disconnectResFailing.errors).toHaveLength(2);
+    expect(disconnectResFailing.errors).toHaveLength(1);
 
     const disconnectRes = await managerContext.graphql.raw({
       query: gql`
@@ -109,7 +105,7 @@ describe("Shift rules schema", () => {
           }
         }
       `,
-      variables: { id: createRes.data?.createShiftRule.id },
+      variables: { id: createRes.id },
     });
 
     expect(disconnectRes.errors).toBeUndefined();
@@ -125,7 +121,6 @@ describe("Shift rules schema", () => {
       MutationCreateDepartmentsArgs
     >{
       data: [{ name: "TestDepartment" }, { name: "OtherTestDepartment" }],
-      query: "id",
     });
 
     const createTestUsersRes = await context.sudo().query.User.createMany(<
@@ -135,6 +130,7 @@ describe("Shift rules schema", () => {
         {
           login: "TestManager",
           password: "test123123",
+          access: { connect: [{ name: "User" }] },
           manages: { connect: [{ name: "TestDepartment" }] },
         },
         {

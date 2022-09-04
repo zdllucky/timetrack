@@ -2,6 +2,7 @@ import { list } from "@keystone-6/core";
 import { checkbox, relationship, text } from "@keystone-6/core/fields";
 import { a } from "../Access";
 import { updateHistory } from "../_misc/plugins/history";
+import { ShiftRuleAccessResolvers } from "./accesses";
 
 const ShiftRule = list({
   fields: {
@@ -26,9 +27,15 @@ const ShiftRule = list({
   access: {
     operation: {
       query: async (data) => await a(data)`QueryAnyShiftRule`,
-      update: async (data) => await a(data)`UpdateAnyShiftRule`,
       create: async (data) => await a(data)`CreateAnyShiftRule`,
       delete: async (data) => await a(data)`DeleteAnyShiftRule`,
+    },
+    item: {
+      update: async (data) =>
+        (await a(data)`UpdateAnyShiftRule`) ||
+        (await ShiftRuleAccessResolvers.manageConnectedUnderSameDepartment(
+          data
+        )),
     },
   },
   hooks: {
