@@ -1,4 +1,4 @@
-import { declareAccess, SystemAccess } from "../access";
+import { AccessResolvers, declareAccess, SystemAccess } from "../Access";
 
 export const shiftRuleAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyShiftRule" }),
@@ -15,3 +15,5 @@ export const shiftRuleAccesses: Array<SystemAccess> = [
     ],
   }),
 ];
+
+export const ShiftRuleAccessResolvers: AccessResolvers = {};

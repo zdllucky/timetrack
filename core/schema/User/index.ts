@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { password, relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr, pa } from "../access";
+import { a, filterOr, pa } from "../Access";
 import { updateHistory } from "../_misc/plugins/history";
 import { UserAccessResolvers } from "./accesses";
 

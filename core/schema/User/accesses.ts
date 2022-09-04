@@ -1,4 +1,4 @@
-import { a, AccessResolvers, declareAccess, pa, SystemAccess } from "../access";
+import { a, AccessResolvers, declareAccess, pa, SystemAccess } from "../Access";
 
 export const userAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyUser" }),

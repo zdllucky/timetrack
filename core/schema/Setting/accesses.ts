@@ -1,4 +1,4 @@
-import { declareAccess, SystemAccess } from "../access";
+import { declareAccess, SystemAccess } from "../Access";
 
 export const settingAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnySetting" }),

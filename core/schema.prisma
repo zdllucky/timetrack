@@ -34,13 +34,14 @@ model Access {
 }
 
 model Department {
-  id             String       @id @default(cuid())
-  name           String       @default("")
-  heads          User[]       @relation("Department_heads")
-  managers       User[]       @relation("Department_managers")
-  workers        User[]       @relation("Department_workers")
-  isControlledBy Department[] @relation("Department_controls")
-  controls       Department[] @relation("Department_controls")
+  id                         String       @id @default(cuid())
+  name                       String       @unique @default("")
+  heads                      User[]       @relation("Department_heads")
+  managers                   User[]       @relation("Department_managers")
+  workers                    User[]       @relation("Department_workers")
+  isControlledBy             Department[] @relation("Department_controls")
+  controls                   Department[] @relation("Department_controls")
+  from_ShiftRule_departments ShiftRule[]  @relation("ShiftRule_departments")
 }
 
 model Setting {
@@ -60,10 +61,11 @@ model History {
 }
 
 model ShiftRule {
-  id     String  @id @default(cuid())
-  name   String  @default("")
-  users  User[]  @relation("ShiftRule_users")
-  active Boolean @default(false)
+  id          String       @id @default(cuid())
+  name        String       @unique @default("")
+  users       User[]       @relation("ShiftRule_users")
+  departments Department[] @relation("ShiftRule_departments")
+  active      Boolean      @default(false)
 }
 
 enum AccessTypeType {

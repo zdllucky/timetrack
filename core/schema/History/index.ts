@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { json, text, timestamp } from "@keystone-6/core/fields";
-import { a } from "../access";
+import { a } from "../Access";
 import { CommonFieldConfig } from "@keystone-6/core/dist/declarations/src/types/config/fields";
 import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/type-info";
 

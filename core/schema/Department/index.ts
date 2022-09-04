@@ -1,13 +1,14 @@
 import { list } from "@keystone-6/core";
 import { updateHistory } from "../_misc/plugins/history";
 import { relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr } from "../access";
+import { a, filterOr } from "../Access";
 import { DepartmentAccessResolvers } from "./accesses";
 
 export const Department = list({
   fields: {
     name: text({
       validation: { isRequired: true },
+      isIndexed: "unique",
       access: {
         update: async (data) =>
           (await a(data)`UpdateAnyDepartment`) ||

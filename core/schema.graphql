@@ -285,6 +285,7 @@ type Department {
 
 input DepartmentWhereUniqueInput {
   id: ID
+  name: String
 }
 
 input DepartmentWhereInput {
@@ -463,11 +464,19 @@ type ShiftRule {
     skip: Int! = 0
   ): [User!]
   usersCount(where: UserWhereInput! = {}): Int
+  departments(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  departmentsCount(where: DepartmentWhereInput! = {}): Int
   active: Boolean
 }
 
 input ShiftRuleWhereUniqueInput {
   id: ID
+  name: String
 }
 
 input ShiftRuleWhereInput {
@@ -477,6 +486,7 @@ input ShiftRuleWhereInput {
   id: IDFilter
   name: StringFilter
   users: UserManyRelationFilter
+  departments: DepartmentManyRelationFilter
   active: BooleanFilter
 }
 
@@ -494,6 +504,7 @@ input ShiftRuleOrderByInput {
 input ShiftRuleUpdateInput {
   name: String
   users: UserRelateToManyForUpdateInput
+  departments: DepartmentRelateToManyForUpdateInput
   active: Boolean
 }
 
@@ -505,6 +516,7 @@ input ShiftRuleUpdateArgs {
 input ShiftRuleCreateInput {
   name: String
   users: UserRelateToManyForCreateInput
+  departments: DepartmentRelateToManyForCreateInput
   active: Boolean
 }
 

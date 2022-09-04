@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { text } from "@keystone-6/core/fields";
 import { updateHistory } from "../_misc/plugins/history";
-import { a } from "../access";
+import { a } from "../Access";
 
 const Setting = list({
   fields: {
