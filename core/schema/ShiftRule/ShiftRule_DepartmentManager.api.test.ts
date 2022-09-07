@@ -10,13 +10,13 @@ import {
 import { gql } from "@keystone-6/core";
 import { createUserSession } from "../_misc/helpers/testHelpers";
 
-describe("Shift rules schema", () => {
+describe("Department Manager", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
   let testUser: any;
   let testDepartManagerUser: any;
 
-  it("can be linked to departments/users by manager for his departments only", async () => {
+  it("can link Department Users to ShiftRule", async () => {
     const managerContext = await createUserSession(
       context,
       testDepartManagerUser

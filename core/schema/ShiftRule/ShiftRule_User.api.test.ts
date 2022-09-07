@@ -9,7 +9,7 @@ import {
 import { createUserSession } from "../_misc/helpers/testHelpers";
 import { gql } from "@keystone-6/core";
 
-describe("Shift rules schema", () => {
+describe("As User: ShiftRule", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
   let testUser: any;
@@ -40,7 +40,7 @@ describe("Shift rules schema", () => {
     await testEnv.disconnect();
   });
 
-  it("can be queried by user", async () => {
+  it("can be queried", async () => {
     const userContext = await createUserSession(context, testUser);
 
     const createRes = await context.sudo().query.ShiftRule.createOne(<

@@ -267,13 +267,7 @@ type Department {
     skip: Int! = 0
   ): [User!]
   workersCount(where: UserWhereInput! = {}): Int
-  isControlledBy(
-    where: DepartmentWhereInput! = {}
-    orderBy: [DepartmentOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Department!]
-  isControlledByCount(where: DepartmentWhereInput! = {}): Int
+  isControlledBy: Department
   controls(
     where: DepartmentWhereInput! = {}
     orderBy: [DepartmentOrderByInput!]! = []
@@ -297,7 +291,7 @@ input DepartmentWhereInput {
   heads: UserManyRelationFilter
   managers: UserManyRelationFilter
   workers: UserManyRelationFilter
-  isControlledBy: DepartmentManyRelationFilter
+  isControlledBy: DepartmentWhereInput
   controls: DepartmentManyRelationFilter
 }
 
@@ -317,7 +311,7 @@ input DepartmentUpdateInput {
   heads: UserRelateToManyForUpdateInput
   managers: UserRelateToManyForUpdateInput
   workers: UserRelateToManyForUpdateInput
-  isControlledBy: DepartmentRelateToManyForUpdateInput
+  isControlledBy: DepartmentRelateToOneForUpdateInput
   controls: DepartmentRelateToManyForUpdateInput
 }
 
@@ -326,6 +320,12 @@ input UserRelateToManyForUpdateInput {
   set: [UserWhereUniqueInput!]
   create: [UserCreateInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input DepartmentRelateToOneForUpdateInput {
+  create: DepartmentCreateInput
+  connect: DepartmentWhereUniqueInput
+  disconnect: Boolean
 }
 
 input DepartmentUpdateArgs {
@@ -338,13 +338,18 @@ input DepartmentCreateInput {
   heads: UserRelateToManyForCreateInput
   managers: UserRelateToManyForCreateInput
   workers: UserRelateToManyForCreateInput
-  isControlledBy: DepartmentRelateToManyForCreateInput
+  isControlledBy: DepartmentRelateToOneForCreateInput
   controls: DepartmentRelateToManyForCreateInput
 }
 
 input UserRelateToManyForCreateInput {
   create: [UserCreateInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input DepartmentRelateToOneForCreateInput {
+  create: DepartmentCreateInput
+  connect: DepartmentWhereUniqueInput
 }
 
 type Setting {
