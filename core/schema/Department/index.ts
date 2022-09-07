@@ -3,6 +3,7 @@ import { updateHistory } from "../_misc/plugins/history";
 import { relationship, text } from "@keystone-6/core/fields";
 import { a, filterOr } from "../Access";
 import { DepartmentAccessResolvers } from "./accesses";
+import DepartmentHooks from "./_misc/hooks";
 
 export const Department = list({
   fields: {
@@ -34,7 +35,15 @@ export const Department = list({
     workers: relationship({ ref: "User.worksIn", many: true }),
     isControlledBy: relationship({
       ref: "Department.controls",
-      many: true,
+      many: false,
+      hooks: {
+        validateInput: async (data) => {
+          await Promise.all([
+            await DepartmentHooks.checkForCircularDepartments(data),
+            await DepartmentHooks.prohibitSetAction(data),
+          ]);
+        },
+      },
       access: {
         update: async (data) => await a(data)`UpdateAnyDepartment`,
       },
@@ -42,6 +51,14 @@ export const Department = list({
     controls: relationship({
       ref: "Department.isControlledBy",
       many: true,
+      hooks: {
+        validateInput: async (data) => {
+          await Promise.all([
+            await DepartmentHooks.checkForCircularDepartments(data),
+            await DepartmentHooks.prohibitSetAction(data),
+          ]);
+        },
+      },
       access: {
         update: async (data) => await a(data)`UpdateAnyDepartment`,
       },

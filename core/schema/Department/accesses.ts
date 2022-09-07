@@ -1,5 +1,11 @@
-import { a, AccessResolvers, declareAccess, SystemAccess } from "../Access";
+import { a, declareAccess, SystemAccess } from "../Access";
 import { QueryUsersArgs } from "../../schema_types";
+import { FieldUpdateItemAccessArgs } from "@keystone-6/core/types";
+import {
+  IndividualFieldAccessControl,
+  ListFilterAccessControl,
+} from "@keystone-6/core/dist/declarations/src/types/config/access-control";
+import { BaseListTypeInfo } from "@keystone-6/core/dist/declarations/src/types/type-info";
 
 export const departmentAccesses: Array<SystemAccess> = [
   declareAccess({ name: "QueryAnyDepartment" }),
@@ -18,7 +24,14 @@ export const departmentAccesses: Array<SystemAccess> = [
   }),
 ];
 
-export const DepartmentAccessResolvers: AccessResolvers = {
+export const DepartmentAccessResolvers: {
+  headOfFilter: ListFilterAccessControl<"update", BaseListTypeInfo>;
+  managerFilter: ListFilterAccessControl<"update", BaseListTypeInfo>;
+  workerFilter: ListFilterAccessControl<"update", BaseListTypeInfo>;
+  headOfItem: IndividualFieldAccessControl<
+    FieldUpdateItemAccessArgs<BaseListTypeInfo>
+  >;
+} = {
   headOfFilter: async (data) =>
     await a(data, {
       heads: { some: { id: { equals: data.session.itemId } } },

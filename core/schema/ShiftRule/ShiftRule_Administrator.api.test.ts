@@ -10,7 +10,7 @@ import {
 import { gql } from "@keystone-6/core";
 import { createUserSession } from "../_misc/helpers/testHelpers";
 
-describe("Shift rules schema", () => {
+describe("Administrator", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
   let testAdminUser: any;
@@ -50,7 +50,7 @@ describe("Shift rules schema", () => {
     await testEnv.disconnect();
   });
 
-  it("can be CUD by administrator", async () => {
+  it("can create/update/delete ShiftRule", async () => {
     const adminContext = await createUserSession(context, testAdminUser);
 
     const createRes = await adminContext.graphql.raw({
