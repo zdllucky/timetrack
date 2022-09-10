@@ -29,9 +29,9 @@ describe("Administrator", () => {
   });
 
   it("can create/delete Department", async () => {
-    const adminContext = await provide.session(context, testAdminUser);
+    const ac = await provide.session(context, testAdminUser);
 
-    const createRes = await adminContext.graphql.raw({
+    const createRes = await ac.graphql.raw({
       query: gql`
         mutation {
           createDepartment(data: { name: "Test1" }) {
@@ -43,7 +43,7 @@ describe("Administrator", () => {
 
     expect(createRes.errors).toBeUndefined();
 
-    const deleteRes = await adminContext.graphql.raw({
+    const deleteRes = await ac.graphql.raw({
       query: gql`
         mutation {
           deleteDepartment(where: { name: "Test1" }) {
@@ -93,7 +93,7 @@ describe("Administrator", () => {
           updateDepartment(
             where: { name: "Test2" }
             data: {
-              heads: { disconnect: { login: "TestUser" } }
+              heads: { disconnect: true }
               managers: { disconnect: { login: "TestUser" } }
               workers: { disconnect: { login: "TestUser" } }
             }
