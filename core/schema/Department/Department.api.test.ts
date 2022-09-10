@@ -20,26 +20,27 @@ describe("Department hierarchy", () => {
   });
 
   it("is not circular downside", async () => {
-    const ac = context.sudo();
+    const rc = context.sudo();
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: { name: "test11" },
     });
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: {
         name: "test12",
         controls: { connect: [{ name: "test11" }] },
       },
     });
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: {
         name: "test13",
         controls: { connect: [{ name: "test12" }] },
       },
     });
 
-    const connectRes = await ac.graphql.raw({
+    const connectRes = await rc.graphql.raw({
       query: gql`
         mutation {
           updateDepartment(
@@ -56,26 +57,26 @@ describe("Department hierarchy", () => {
   });
 
   it("is not circular upside", async () => {
-    const ac = context.sudo();
+    const rc = context.sudo();
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: { name: "test21" },
     });
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: {
         name: "test22",
         isControlledBy: { connect: { name: "test21" } },
       },
     });
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: {
         name: "test23",
         isControlledBy: { connect: { name: "test22" } },
       },
     });
 
-    const connectRes = await ac.graphql.raw({
+    const connectRes = await rc.graphql.raw({
       query: gql`
         mutation {
           updateDepartment(
@@ -92,13 +93,13 @@ describe("Department hierarchy", () => {
   });
 
   it("is not self connected", async () => {
-    const ac = context.sudo();
+    const rc = context.sudo();
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: { name: "test41" },
     });
 
-    const connectResUp = await ac.graphql.raw({
+    const connectResUp = await rc.graphql.raw({
       query: gql`
         mutation {
           updateDepartment(
@@ -113,7 +114,7 @@ describe("Department hierarchy", () => {
 
     expect(connectResUp.errors).toHaveLength(1);
 
-    const connectResDown = await ac.graphql.raw({
+    const connectResDown = await rc.graphql.raw({
       query: gql`
         mutation {
           updateDepartment(
@@ -130,20 +131,20 @@ describe("Department hierarchy", () => {
   });
 
   it("is not circular on creation", async () => {
-    const ac = context.sudo();
+    const rc = context.sudo();
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: { name: "test31" },
     });
 
-    await ac.query.Department.createOne(<MutationCreateDepartmentArgs>{
+    await rc.query.Department.createOne(<MutationCreateDepartmentArgs>{
       data: {
         name: "test32",
         controls: { connect: [{ name: "test31" }] },
       },
     });
 
-    const connectRes = await ac.graphql.raw({
+    const connectRes = await rc.graphql.raw({
       query: gql`
         mutation {
           createDepartment(

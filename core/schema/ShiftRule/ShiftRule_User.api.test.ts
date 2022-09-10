@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
-import {
-  MutationCreateShiftRuleArgs,
-  MutationCreateUsersArgs,
-} from "../../schema_types";
-import { createUserSession } from "../_misc/helpers/testHelpers";
+import { Maybe, MutationCreateShiftRuleArgs, User } from "../../schema_types";
+import { provide } from "../_misc/helpers/testHelpers";
 import { gql } from "@keystone-6/core";
 
 describe("As User: ShiftRule", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
-  let testUser: any;
+  let testUser: Maybe<User>;
 
   beforeAll(async () => {
     testEnv = await setupTestEnv({ config });
@@ -20,20 +16,7 @@ describe("As User: ShiftRule", () => {
 
     await testEnv.connect();
 
-    const createTestUsersRes = await context.sudo().query.User.createMany(<
-      MutationCreateUsersArgs
-    >{
-      data: [
-        {
-          login: "TestUser",
-          password: "test123123",
-          access: { connect: [{ name: "User" }] },
-        },
-      ],
-      query: "id, login, access { name }",
-    });
-
-    testUser = createTestUsersRes.find(({ login }) => login === "TestUser");
+    testUser = await provide.user(context);
   });
 
   afterAll(async () => {
@@ -41,7 +24,7 @@ describe("As User: ShiftRule", () => {
   });
 
   it("can be queried", async () => {
-    const userContext = await createUserSession(context, testUser);
+    const userContext = await provide.session(context, testUser);
 
     const createRes = await context.sudo().query.ShiftRule.createOne(<
       MutationCreateShiftRuleArgs

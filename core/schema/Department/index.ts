@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { updateHistory } from "../_misc/plugins/history";
 import { relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr } from "../Access";
+import { a, condition } from "../Access";
 import { DepartmentAccessResolvers } from "./accesses";
 import DepartmentHooks from "./_misc/hooks";
 
@@ -29,7 +29,7 @@ export const Department = list({
       access: {
         update: async (data) =>
           (await a(data)`UpdateAnyDepartment`) ||
-          DepartmentAccessResolvers.headOfItem(data),
+          (await DepartmentAccessResolvers.headOfItem(data)),
       },
     }),
     workers: relationship({ ref: "User.worksIn", many: true }),
@@ -75,7 +75,7 @@ export const Department = list({
     },
     filter: {
       update: async (data) =>
-        filterOr(
+        condition.filter.or(
           await a(data)`UpdateAnyDepartment`,
           await DepartmentAccessResolvers.managerFilter(data),
           await DepartmentAccessResolvers.headOfFilter(data)

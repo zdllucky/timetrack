@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { password, relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr, pa } from "../Access";
+import { a, condition, pa } from "../Access";
 import { updateHistory } from "../_misc/plugins/history";
 import { UserAccessResolvers } from "./accesses";
 
@@ -52,7 +52,7 @@ const User = list({
     },
     filter: {
       update: async (data) =>
-        filterOr(
+        condition.filter.or(
           await a(data)`UpdateAnyUser`,
           await UserAccessResolvers.updateOwnFilter(data),
           await UserAccessResolvers.manageFilter(data)
