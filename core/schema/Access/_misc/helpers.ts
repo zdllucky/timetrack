@@ -84,20 +84,26 @@ export const a = <A extends BaseAccessArgs<T>, T extends BaseListTypeInfo>(
   };
 };
 
-/**
- * Filter access checkers "OR" aggregation method
- */
-export const filterOr = <T extends BaseListTypeInfo>(
-  ...filter: (boolean | FilterOutput<T>)[]
-) =>
-  filter.includes(true) || { OR: filter.filter((v) => typeof v !== "boolean") };
-
-/**
- * Filter access checkers "AND" aggregation method
- */
-export const filterAnd = <T extends BaseListTypeInfo>(
-  ...filter: (boolean | FilterOutput<T>)[]
-) =>
-  filter.includes(false) && {
-    AND: filter.filter((v) => typeof v !== "boolean"),
-  };
+// WISH: Optimize async operations calculation for filter
+export const condition = {
+  filter: {
+    or: <T extends BaseListTypeInfo>(
+      ...filter: (boolean | FilterOutput<T>)[]
+    ) =>
+      filter.includes(true) || {
+        OR: filter.filter((v) => typeof v !== "boolean"),
+      },
+    and: <T extends BaseListTypeInfo>(
+      ...filter: (boolean | FilterOutput<T>)[]
+    ) =>
+      filter.includes(false) && {
+        AND: filter.filter((v) => typeof v !== "boolean"),
+      },
+  },
+  async: {
+    and: async (...fn: []) =>
+      (await Promise.all(fn)).reduce((ch, v) => ch && v, true),
+    or: async (...fn: []) =>
+      (await Promise.all(fn)).reduce((ch, v) => ch || v, false),
+  },
+};

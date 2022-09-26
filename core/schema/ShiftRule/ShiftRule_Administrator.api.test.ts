@@ -1,19 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
 import {
+  Maybe,
   MutationCreateDepartmentsArgs,
-  MutationCreateUsersArgs,
   QueryShiftRuleArgs,
+  User,
 } from "../../schema_types";
 import { gql } from "@keystone-6/core";
-import { createUserSession } from "../_misc/helpers/testHelpers";
+import { provide } from "../_misc/helpers/testHelpers";
 
 describe("Administrator", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
-  let testAdminUser: any;
+  let testAdminUser: Maybe<User>;
 
   beforeAll(async () => {
     testEnv = await setupTestEnv({ config });
@@ -28,22 +28,10 @@ describe("Administrator", () => {
       query: "id",
     });
 
-    const createTestUsersRes = await context.sudo().query.User.createMany(<
-      MutationCreateUsersArgs
-    >{
-      data: [
-        {
-          login: "TestAdmin",
-          password: "test123123",
-          access: { connect: [{ name: "Administrator" }] },
-        },
-      ],
-      query: "id, login, access { name }",
+    testAdminUser = await provide.user(context, {
+      login: "TestAdmin",
+      access: { connect: [{ name: "Administrator" }] },
     });
-
-    testAdminUser = createTestUsersRes.find(
-      ({ login }) => login === "TestAdmin"
-    );
   });
 
   afterAll(async () => {
@@ -51,7 +39,7 @@ describe("Administrator", () => {
   });
 
   it("can create/update/delete ShiftRule", async () => {
-    const adminContext = await createUserSession(context, testAdminUser);
+    const adminContext = await provide.session(context, testAdminUser);
 
     const createRes = await adminContext.graphql.raw({
       query: gql`

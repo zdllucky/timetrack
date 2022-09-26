@@ -33,7 +33,7 @@
     "migrate": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate dev",
     "postinstall_fix": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone postinstall",
     "migrate:status": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) keystone prisma migrate status",
-    "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --coverage --testTimeout=60000",
+    "test": "env $(grep -v '^#' ../deploy/.envs/dev | xargs -0) jest --runInBand --testTimeout=60000",
     "generate_schema": "graphql-codegen --config codegen.json --watch"
   },
   "engines": {

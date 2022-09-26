@@ -1,27 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
 import {
+  Maybe,
   MutationCreateDepartmentsArgs,
   MutationCreateShiftRuleArgs,
-  MutationCreateUsersArgs,
+  User,
 } from "../../schema_types";
 import { gql } from "@keystone-6/core";
-import { createUserSession } from "../_misc/helpers/testHelpers";
+import { provide } from "../_misc/helpers/testHelpers";
 
 describe("Department Manager", () => {
   let testEnv: TestEnv;
   let context: KeystoneContext;
-  let testUser: any;
-  let testDepartManagerUser: any;
+  let testUser: Maybe<User>;
+  let testDepartManagerUser: Maybe<User>;
 
   it("can link Department Users to ShiftRule", async () => {
-    const managerContext = await createUserSession(
+    const managerContext = await provide.session(
       context,
       testDepartManagerUser
     );
-    const userContext = await createUserSession(context, testUser);
+    const userContext = await provide.session(context, testUser);
 
     const createRes = await context.sudo().query.ShiftRule.createOne(<
       MutationCreateShiftRuleArgs
@@ -123,35 +123,19 @@ describe("Department Manager", () => {
       data: [{ name: "TestDepartment" }, { name: "OtherTestDepartment" }],
     });
 
-    const createTestUsersRes = await context.sudo().query.User.createMany(<
-      MutationCreateUsersArgs
-    >{
-      data: [
-        {
-          login: "TestManager",
-          password: "test123123",
-          access: { connect: [{ name: "User" }] },
-          manages: { connect: [{ name: "TestDepartment" }] },
-        },
-        {
-          login: "TestUser",
-          password: "test123123",
-          access: { connect: [{ name: "User" }] },
-          worksIn: { connect: { name: "TestDepartment" } },
-        },
-        {
-          login: "TestOtherUser",
-          access: { connect: [{ name: "User" }] },
-          password: "test123123",
-        },
-      ],
-      query: "id, login, access { name }",
+    testDepartManagerUser = await provide.user(context, {
+      login: "TestManager",
+      manages: { connect: [{ name: "TestDepartment" }] },
     });
 
-    testDepartManagerUser = createTestUsersRes.find(
-      ({ login }) => login === "TestManager"
-    );
-    testUser = createTestUsersRes.find(({ login }) => login === "TestUser");
+    testUser = await provide.user(context, {
+      login: "TestUser",
+      worksIn: { connect: [{ name: "TestDepartment" }] },
+    });
+
+    await provide.user(context, {
+      login: "TestOtherUser",
+    });
   });
 
   afterAll(async () => {

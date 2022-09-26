@@ -1,7 +1,7 @@
 import { list } from "@keystone-6/core";
 import { updateHistory } from "../_misc/plugins/history";
 import { relationship, text } from "@keystone-6/core/fields";
-import { a, filterOr } from "../Access";
+import { a } from "../Access";
 import { DepartmentAccessResolvers } from "./accesses";
 import DepartmentHooks from "./_misc/hooks";
 
@@ -18,7 +18,7 @@ export const Department = list({
     }),
     heads: relationship({
       ref: "User.headOf",
-      many: true,
+      many: false,
       access: {
         update: async (data) => await a(data)`UpdateAnyDepartment`,
       },
@@ -29,7 +29,8 @@ export const Department = list({
       access: {
         update: async (data) =>
           (await a(data)`UpdateAnyDepartment`) ||
-          DepartmentAccessResolvers.headOfItem(data),
+          (await DepartmentAccessResolvers.headOfItem(data)) ||
+          (await DepartmentAccessResolvers.headOfSuperField(data)),
       },
     }),
     workers: relationship({ ref: "User.worksIn", many: true }),
@@ -73,13 +74,8 @@ export const Department = list({
       create: async (data) => await a(data)`CreateAnyDepartment`,
       delete: async (data) => await a(data)`DeleteAnyDepartment`,
     },
-    filter: {
-      update: async (data) =>
-        filterOr(
-          await a(data)`UpdateAnyDepartment`,
-          await DepartmentAccessResolvers.managerFilter(data),
-          await DepartmentAccessResolvers.headOfFilter(data)
-        ),
+    item: {
+      update: DepartmentAccessResolvers.headOfSuperItem,
     },
   },
 });

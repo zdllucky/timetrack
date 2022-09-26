@@ -246,13 +246,7 @@ input AccessCreateInput {
 type Department {
   id: ID!
   name: String
-  heads(
-    where: UserWhereInput! = {}
-    orderBy: [UserOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [User!]
-  headsCount(where: UserWhereInput! = {}): Int
+  heads: User
   managers(
     where: UserWhereInput! = {}
     orderBy: [UserOrderByInput!]! = []
@@ -288,7 +282,7 @@ input DepartmentWhereInput {
   NOT: [DepartmentWhereInput!]
   id: IDFilter
   name: StringFilter
-  heads: UserManyRelationFilter
+  heads: UserWhereInput
   managers: UserManyRelationFilter
   workers: UserManyRelationFilter
   isControlledBy: DepartmentWhereInput
@@ -308,11 +302,17 @@ input DepartmentOrderByInput {
 
 input DepartmentUpdateInput {
   name: String
-  heads: UserRelateToManyForUpdateInput
+  heads: UserRelateToOneForUpdateInput
   managers: UserRelateToManyForUpdateInput
   workers: UserRelateToManyForUpdateInput
   isControlledBy: DepartmentRelateToOneForUpdateInput
   controls: DepartmentRelateToManyForUpdateInput
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
 }
 
 input UserRelateToManyForUpdateInput {
@@ -335,11 +335,16 @@ input DepartmentUpdateArgs {
 
 input DepartmentCreateInput {
   name: String
-  heads: UserRelateToManyForCreateInput
+  heads: UserRelateToOneForCreateInput
   managers: UserRelateToManyForCreateInput
   workers: UserRelateToManyForCreateInput
   isControlledBy: DepartmentRelateToOneForCreateInput
   controls: DepartmentRelateToManyForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserRelateToManyForCreateInput {

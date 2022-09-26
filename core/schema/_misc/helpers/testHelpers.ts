@@ -1,9 +1,27 @@
 import { KeystoneContext } from "@keystone-6/core/types";
+import { MutationCreateUserArgs, User } from "../../../schema_types";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createUserSession = (context: KeystoneContext, user: any) =>
-  context.withSession({
-    itemId: user.id,
-    listKey: "User",
-    data: user,
-  });
+export const provide = {
+  session: (context: KeystoneContext, user: User) =>
+    context.withSession({
+      itemId: user.id,
+      listKey: "User",
+      data: user,
+    }),
+  user: async (
+    context: KeystoneContext,
+    user?: MutationCreateUserArgs["data"]
+  ) => {
+    const parsedUser = {
+      login: "testUser",
+      access: { connect: [{ name: "User" }] },
+      password: "test123123",
+      ...(user ?? {}),
+    };
+
+    return (await context.sudo().query.User.createOne(<MutationCreateUserArgs>{
+      data: parsedUser,
+      query: "id, login, access { name }",
+    })) as User;
+  },
+};

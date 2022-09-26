@@ -36,7 +36,8 @@ model Access {
 model Department {
   id                         String       @id @default(cuid())
   name                       String       @unique @default("")
-  heads                      User[]       @relation("Department_heads")
+  heads                      User?        @relation("Department_heads", fields: [headsId], references: [id])
+  headsId                    String?      @map("heads")
   managers                   User[]       @relation("Department_managers")
   workers                    User[]       @relation("Department_workers")
   isControlledBy             Department?  @relation("Department_isControlledBy", fields: [isControlledById], references: [id])
@@ -44,6 +45,7 @@ model Department {
   controls                   Department[] @relation("Department_isControlledBy")
   from_ShiftRule_departments ShiftRule[]  @relation("ShiftRule_departments")
 
+  @@index([headsId])
   @@index([isControlledById])
 }
 
