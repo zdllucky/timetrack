@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        index: [ 0, 1 ]
+        index: [ 0, 1, 2, 3 ]
 
     services:
       redis:
@@ -87,5 +87,5 @@ jobs:
             --testTimeout=60000 \
             --testRegex .api.test.ts$
         env:
-          CI_NODE_TOTAL: 2
+          CI_NODE_TOTAL: 4
           CI_NODE_INDEX: ${{ matrix.index }}
