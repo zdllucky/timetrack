@@ -1,0 +1,35 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: "npm"
+    directory: "core/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "core"
+      - "dependencies"
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "repo"
+      - "dependencies"
+  - package-ecosystem: "npm"
+    directory: "web-client/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "web-client"
+      - "dependencies"
+  - package-ecosystem: "pub"
+    directory: "wrapper_app/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "wrapper_app"
+      - "dependencies"
