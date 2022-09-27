@@ -10,7 +10,7 @@
   "dependencies": {
     "@keystone-6/auth": "^4.0.0",
     "@keystone-6/core": "^2.1.0",
-    "@keystone-6/session-store-redis": "^4.0.0",
+    "@keystone-6/session-store-redis": "^4.0.1",
     "@redis/client": "^1.2.0",
     "graphql": "^15.8.0"
   },
