@@ -38,7 +38,10 @@ describe("As User: ShiftRule", () => {
       query: "id",
     });
 
-    const readRes = await userContext.graphql.raw<Query, { id: string }>({
+    const readRes = await userContext.graphql.raw<
+      Pick<Query, "shiftRule">,
+      { id: string }
+    >({
       query: gql`
         query ($id: ID!) {
           shiftRule(where: { id: $id }) {

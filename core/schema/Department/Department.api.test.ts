@@ -1,7 +1,7 @@
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
-import { MutationCreateDepartmentArgs } from "../../schema_types";
+import { Mutation, MutationCreateDepartmentArgs } from "../../schema_types";
 import { gql } from "@keystone-6/core";
 
 describe("Department hierarchy", () => {
@@ -40,7 +40,10 @@ describe("Department hierarchy", () => {
       },
     });
 
-    const connectRes = await rc.graphql.raw({
+    const connectRes = await rc.graphql.raw<
+      Pick<Mutation, "updateDepartment">,
+      never
+    >({
       query: gql`
         mutation {
           updateDepartment(
