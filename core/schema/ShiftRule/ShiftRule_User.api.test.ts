@@ -1,7 +1,12 @@
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
-import { Maybe, MutationCreateShiftRuleArgs, User } from "../../schema_types";
+import {
+  Maybe,
+  MutationCreateShiftRuleArgs,
+  Query,
+  User,
+} from "../../schema_types";
 import { provide } from "../_misc/helpers/testHelpers";
 import { gql } from "@keystone-6/core";
 
@@ -33,7 +38,7 @@ describe("As User: ShiftRule", () => {
       query: "id",
     });
 
-    const readRes = await userContext.graphql.raw({
+    const readRes = await userContext.graphql.raw<Query, { id: string }>({
       query: gql`
         query ($id: ID!) {
           shiftRule(where: { id: $id }) {
@@ -53,6 +58,6 @@ describe("As User: ShiftRule", () => {
     });
 
     expect(readRes.errors).toBeUndefined();
-    expect(readRes.data?.shiftRule.name).toBe("Test rule");
+    expect(readRes.data?.shiftRule?.name).toBe("Test rule");
   });
 });

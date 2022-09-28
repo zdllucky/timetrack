@@ -3,6 +3,7 @@ import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
 import {
   Maybe,
+  Mutation,
   MutationCreateDepartmentsArgs,
   QueryShiftRuleArgs,
   User,
@@ -41,7 +42,7 @@ describe("Administrator", () => {
   it("can create/update/delete ShiftRule", async () => {
     const adminContext = await provide.session(context, testAdminUser);
 
-    const createRes = await adminContext.graphql.raw({
+    const createRes = await adminContext.graphql.raw<Mutation, never>({
       query: gql`
         mutation {
           createShiftRule(
@@ -58,7 +59,10 @@ describe("Administrator", () => {
 
     expect(createRes.errors).toBeUndefined();
 
-    const updateRes = await adminContext.graphql.raw({
+    const updateRes = await adminContext.graphql.raw<
+      Mutation,
+      { id: string | undefined }
+    >({
       query: gql`
         mutation ($id: ID!) {
           updateShiftRule(data: { active: true }, where: { id: $id }) {
@@ -67,10 +71,10 @@ describe("Administrator", () => {
           }
         }
       `,
-      variables: { id: createRes.data?.createShiftRule.id },
+      variables: { id: createRes.data?.createShiftRule?.id },
     });
 
-    expect(updateRes.data?.updateShiftRule.active).toBeTruthy();
+    expect(updateRes.data?.updateShiftRule?.active).toBeTruthy();
 
     const deleteRes = await adminContext.graphql.raw({
       query: gql`
@@ -80,7 +84,7 @@ describe("Administrator", () => {
           }
         }
       `,
-      variables: { id: createRes.data?.createShiftRule.id },
+      variables: { id: createRes.data?.createShiftRule?.id },
     });
 
     expect(deleteRes.errors).toBeUndefined();
@@ -88,7 +92,7 @@ describe("Administrator", () => {
     const queryDeletedRes = await adminContext.query.ShiftRule.findOne(<
       QueryShiftRuleArgs
     >{
-      where: { id: createRes.data?.createShiftRule.id },
+      where: { id: createRes.data?.createShiftRule?.id },
       query: "name",
     });
 
