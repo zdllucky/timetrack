@@ -75,8 +75,6 @@ describe("User", () => {
       `,
     });
 
-    console.log(JSON.stringify(queryRes));
-
     expect(queryRes.errors).toBeUndefined();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     expect((queryRes.data!.departments as Department[]).length).toBe(3);
