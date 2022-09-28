@@ -3,6 +3,7 @@ import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
 import {
   Maybe,
+  Mutation,
   MutationCreateDepartmentsArgs,
   MutationCreateShiftRuleArgs,
   User,
@@ -30,7 +31,10 @@ describe("Department Manager", () => {
       query: "id",
     });
 
-    const connectRes = await managerContext.graphql.raw({
+    const connectRes = await managerContext.graphql.raw<
+      Pick<Mutation, "updateShiftRule">,
+      { id: string }
+    >({
       query: gql`
         mutation ($id: ID!) {
           updateShiftRule(
@@ -50,7 +54,10 @@ describe("Department Manager", () => {
 
     expect(connectRes.errors).toBeUndefined();
 
-    const connectResFailing = await userContext.graphql.raw({
+    const connectResFailing = await userContext.graphql.raw<
+      Pick<Mutation, "updateShiftRule">,
+      { id: string }
+    >({
       query: gql`
         mutation ($id: ID!) {
           updateShiftRule(
@@ -70,7 +77,10 @@ describe("Department Manager", () => {
 
     expect(connectResFailing.errors).toHaveLength(1);
 
-    const disconnectResFailing = await userContext.graphql.raw({
+    const disconnectResFailing = await userContext.graphql.raw<
+      Pick<Mutation, "updateShiftRule">,
+      { id: string }
+    >({
       query: gql`
         mutation ($id: ID!) {
           updateShiftRule(
@@ -90,7 +100,10 @@ describe("Department Manager", () => {
 
     expect(disconnectResFailing.errors).toHaveLength(1);
 
-    const disconnectRes = await managerContext.graphql.raw({
+    const disconnectRes = await managerContext.graphql.raw<
+      Pick<Mutation, "updateShiftRule">,
+      { id: string }
+    >({
       query: gql`
         mutation ($id: ID!) {
           updateShiftRule(

@@ -3,9 +3,9 @@ import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
 import { provide } from "../_misc/helpers/testHelpers";
 import {
-  Department,
   Maybe,
   MutationCreateDepartmentArgs,
+  Query,
   User,
 } from "../../schema_types";
 import { gql } from "@keystone-6/core";
@@ -50,7 +50,7 @@ describe("User", () => {
       },
     });
 
-    const queryRes = await uc.graphql.raw({
+    const queryRes = await uc.graphql.raw<Pick<Query, "departments">, never>({
       query: gql`
         query {
           departments {
@@ -77,8 +77,6 @@ describe("User", () => {
 
     expect(queryRes.errors).toBeUndefined();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-explicit-any
-    expect(((queryRes.data as any)!.departments as Department[]).length).toBe(
-      3
-    );
+    expect(queryRes.data?.departments?.length).toBe(3);
   });
 });

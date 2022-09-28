@@ -42,7 +42,10 @@ describe("Administrator", () => {
   it("can create/update/delete ShiftRule", async () => {
     const adminContext = await provide.session(context, testAdminUser);
 
-    const createRes = await adminContext.graphql.raw<Mutation, never>({
+    const createRes = await adminContext.graphql.raw<
+      Pick<Mutation, "createShiftRule">,
+      never
+    >({
       query: gql`
         mutation {
           createShiftRule(
@@ -76,7 +79,10 @@ describe("Administrator", () => {
 
     expect(updateRes.data?.updateShiftRule?.active).toBeTruthy();
 
-    const deleteRes = await adminContext.graphql.raw({
+    const deleteRes = await adminContext.graphql.raw<
+      Pick<Mutation, "deleteShiftRule">,
+      { id: string | undefined }
+    >({
       query: gql`
         mutation ($id: ID!) {
           deleteShiftRule(where: { id: $id }) {

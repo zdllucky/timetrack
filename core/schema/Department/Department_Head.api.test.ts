@@ -1,7 +1,12 @@
 import { setupTestEnv, TestEnv } from "@keystone-6/core/testing";
 import { KeystoneContext } from "@keystone-6/core/types";
 import config from "../../keystone";
-import { Maybe, MutationCreateDepartmentArgs, User } from "../../schema_types";
+import {
+  Maybe,
+  Mutation,
+  MutationCreateDepartmentArgs,
+  User,
+} from "../../schema_types";
 import { provide } from "../_misc/helpers/testHelpers";
 import { gql } from "@keystone-6/core";
 
@@ -30,7 +35,10 @@ describe("Department Head", () => {
   it("can (dis)connect Users as Managers to Department", async () => {
     const hc = provide.session(context, headUser);
 
-    const connectRes = await hc.graphql.raw({
+    const connectRes = await hc.graphql.raw<
+      Pick<Mutation, "updateDepartment">,
+      never
+    >({
       query: gql`
         mutation {
           updateDepartment(
