@@ -76,7 +76,9 @@ describe("User", () => {
     });
 
     expect(queryRes.errors).toBeUndefined();
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect((queryRes.data!.departments as Department[]).length).toBe(3);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-explicit-any
+    expect(((queryRes.data as any)!.departments as Department[]).length).toBe(
+      3
+    );
   });
 });
