@@ -15,7 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "graphql": "^15.8.0",
     "i18next": "^21.6.16",
-    "i18next-browser-languagedetector": "^6.1.4",
+    "i18next-browser-languagedetector": "^6.1.5",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "notistack": "^2.0.4",
