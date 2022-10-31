@@ -17,7 +17,7 @@
   "devDependencies": {
     "@jest/test-result": "^28.1.1",
     "@jest/test-sequencer": "^28.1.1",
-    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/cli": "^2.13.8",
     "@graphql-codegen/introspection": "^2.2.1",
     "@graphql-codegen/typescript": "^2.7.3",
     "@types/jest": "^27.4.1",
